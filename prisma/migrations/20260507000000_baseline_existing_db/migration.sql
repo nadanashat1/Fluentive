@@ -1,0 +1,3 @@
+-- Baseline marker for brownfield database (schema evolved via legacy migrations/).
+-- No DDL: production data and tables already exist.
+-- Applied via: npx prisma migrate resolve --applied 20260507000000_baseline_existing_db

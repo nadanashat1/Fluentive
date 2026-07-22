@@ -1,0 +1,310 @@
+﻿.next/dev/types/validator.ts(630,31): error TS2344: Type 'typeof import("D:/Fluentive/Fluentive/src/app/api/courses/[id]/enroll/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/courses/[id]/enroll">'.
+  Types of property 'POST' are incompatible.
+    Type '(request: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ success: boolean; error: string; }> | NextResponse<{ success: boolean; data: { status: EnrollmentStatus; ... 6 more ...; enrolledAt: Date; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(639,31): error TS2344: Type 'typeof import("D:/Fluentive/Fluentive/src/app/api/courses/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/courses/[id]">'.
+  Types of property 'GET' are incompatible.
+    Type '(request: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ success: boolean; error: string; }> | NextResponse<{ success: boolean; data: { createdAt: string; ... 20 more ...; enrollCount: number; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(765,31): error TS2344: Type 'typeof import("D:/Fluentive/Fluentive/src/app/api/hr/ats/applications/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/hr/ats/applications/[id]">'.
+  Types of property 'PATCH' are incompatible.
+    Type '(request: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ success: boolean; error: string; }> | NextResponse<{ success: boolean; data: { candidate: { id: string; ... 13 more ...; totalYearsExp: number; }; job: { ...; }; } & { ...; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/dev/types/validator.ts(810,31): error TS2344: Type 'typeof import("D:/Fluentive/Fluentive/src/app/api/instructors/[id]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/instructors/[id]">'.
+  Types of property 'GET' are incompatible.
+    Type '(request: NextRequest, { params }: { params: { id: string; }; }) => Promise<NextResponse<{ success: boolean; error: string; }> | NextResponse<{ success: boolean; data: { createdAt: string; ... 21 more ...; totalRevenue: number; }; }>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+src/app/(app)/finance/page.tsx(116,29): error TS2322: Type '(value: number) => string' is not assignable to type 'Formatter<ValueType, NameType> & ((value: ValueType, name: NameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [...])'.
+  Type '(value: number) => string' is not assignable to type 'Formatter<ValueType, NameType>'.
+    Types of parameters 'value' and 'value' are incompatible.
+      Type 'ValueType | undefined' is not assignable to type 'number'.
+        Type 'undefined' is not assignable to type 'number'.
+src/app/(app)/leads/[id]/page.tsx(120,32): error TS2322: Type '"NEW" | "CONTACTED" | "QUALIFIED" | "CONVERTED" | "LOST"' is not assignable to type '"NEW" | "CONTACTED" | "QUALIFIED" | "LOST"'.
+  Type '"CONVERTED"' is not assignable to type '"NEW" | "CONTACTED" | "QUALIFIED" | "LOST"'.
+src/app/(app)/leads/[id]/page.tsx(124,66): error TS2339: Property 'source' does not exist on type '{ status: "NEW" | "CONTACTED" | "QUALIFIED" | "CONVERTED" | "LOST"; name: string; id: string; createdAt: string; updatedAt: string; tags: string[]; userId: string; email?: string | null | undefined; ... 8 more ...; aiScore?: number | ... 1 more ... | undefined; }'.
+src/app/(app)/leads/[id]/page.tsx(154,26): error TS2304: Cannot find name 'Phone'.
+src/app/(app)/leads/page.tsx(9,10): error TS2305: Module '"@/lib/api/client"' has no exported member 'api'.
+src/app/(app)/sales-pipeline/page.tsx(42,29): error TS2339: Property 'stats' does not exist on type '{ deals: { id: string; createdAt: string; updatedAt: string; userId: string; title: string; value: number; stage: "LOST" | "OPEN" | "DISCOVERY" | "QUALIFICATION" | "PROPOSAL" | "NEGOTIATION" | "WON"; probability?: number | undefined; expectedCloseDate?: string | ... 1 more ... | undefined; leadId?: string | ... 1 mo...'.
+src/app/(app)/sales-pipeline/page.tsx(100,15): error TS2322: Type 'number' is not assignable to type 'string'.
+src/app/api/activity-logs/route.ts(18,19): error TS2345: Argument of type '(request: NextRequest) => Promise<Response>' is not assignable to parameter of type '(req: Request | NextRequest) => Promise<Response>'.
+  Types of parameters 'request' and 'req' are incompatible.
+    Type 'Request | NextRequest' is not assignable to type 'NextRequest'.
+      Type 'Request' is missing the following properties from type 'NextRequest': cookies, nextUrl, page, ua
+src/app/api/activity-logs/route.ts(133,49): error TS2345: Argument of type 'Request' is not assignable to parameter of type 'NextRequest'.
+  Type 'Request' is missing the following properties from type 'NextRequest': cookies, nextUrl, page, ua
+src/app/api/ai/dashboard/route.ts(85,51): error TS2345: Argument of type 'Request' is not assignable to parameter of type 'NextRequest'.
+  Type 'Request' is missing the following properties from type 'NextRequest': cookies, nextUrl, page, ua
+src/app/api/courses/route.ts(82,7): error TS2322: Type '{ title: any; description: any; thumbnail: any; price: any; level: any; category: any; tags: any; status: any; instructorId: any; durationMins: any; totalLessons: any; }' is not assignable to type '(Without<CourseCreateInput, CourseUncheckedCreateInput> & CourseUncheckedCreateInput) | (Without<...> & CourseCreateInput)'.
+  Type '{ title: any; description: any; thumbnail: any; price: any; level: any; category: any; tags: any; status: any; instructorId: any; durationMins: any; totalLessons: any; }' is not assignable to type 'Without<CourseUncheckedCreateInput, CourseCreateInput> & CourseCreateInput'.
+    Property 'organization' is missing in type '{ title: any; description: any; thumbnail: any; price: any; level: any; category: any; tags: any; status: any; instructorId: any; durationMins: any; totalLessons: any; }' but required in type 'CourseCreateInput'.
+src/app/api/deals/route.ts(3,20): error TS2305: Module '"@/lib/server/services/deals.service"' has no exported member 'createDeal'.
+src/app/api/deals/route.ts(24,55): error TS2554: Expected 1-2 arguments, but got 3.
+src/app/api/deals/route.ts(29,23): error TS2339: Property 'deals' does not exist on type '({ lead: { name: string; company: string | null; }; owner: { name: string; email: string; }; } & { id: string; createdAt: Date; updatedAt: Date; organizationId: string | null; isDeleted: boolean; ... 9 more ...; leadId: string; })[]'.
+src/app/api/deals/route.ts(35,23): error TS2339: Property 'total' does not exist on type '({ lead: { name: string; company: string | null; }; owner: { name: string; email: string; }; } & { id: string; createdAt: Date; updatedAt: Date; organizationId: string | null; isDeleted: boolean; ... 9 more ...; leadId: string; })[]'.
+src/app/api/deals/route.ts(36,22): error TS2339: Property 'page' does not exist on type '({ lead: { name: string; company: string | null; }; owner: { name: string; email: string; }; } & { id: string; createdAt: Date; updatedAt: Date; organizationId: string | null; isDeleted: boolean; ... 9 more ...; leadId: string; })[]'.
+src/app/api/deals/route.ts(37,23): error TS2339: Property 'limit' does not exist on type '({ lead: { name: string; company: string | null; }; owner: { name: string; email: string; }; } & { id: string; createdAt: Date; updatedAt: Date; organizationId: string | null; isDeleted: boolean; ... 9 more ...; leadId: string; })[]'.
+src/app/api/deals/route.ts(38,23): error TS2339: Property 'stats' does not exist on type '({ lead: { name: string; company: string | null; }; owner: { name: string; email: string; }; } & { id: string; createdAt: Date; updatedAt: Date; organizationId: string | null; isDeleted: boolean; ... 9 more ...; leadId: string; })[]'.
+src/app/api/debug/seed-user/route.ts(48,9): error TS2820: Type '"ADMIN"' is not assignable to type 'UserRole | undefined'. Did you mean '"admin"'?
+src/app/api/finance/invoices/route.ts(76,7): error TS2322: Type '{ number: string; clientName: any; clientEmail: any; amount: any; tax: number; total: any; dueDate: Date; notes: any; status: "SENT"; items: { create: any; }; }' is not assignable to type '(Without<InvoiceCreateInput, InvoiceUncheckedCreateInput> & InvoiceUncheckedCreateInput) | (Without<...> & InvoiceCreateInput)'.
+  Type '{ number: string; clientName: any; clientEmail: any; amount: any; tax: number; total: any; dueDate: Date; notes: any; status: "SENT"; items: { create: any; }; }' is not assignable to type 'Without<InvoiceUncheckedCreateInput, InvoiceCreateInput> & InvoiceCreateInput'.
+    Property 'organization' is missing in type '{ number: string; clientName: any; clientEmail: any; amount: any; tax: number; total: any; dueDate: Date; notes: any; status: "SENT"; items: { create: any; }; }' but required in type 'InvoiceCreateInput'.
+src/app/api/hr/ats/applications/[id]/route.ts(47,11): error TS2322: Type '{ firstName: string; lastName: string; email: string; phone: string | null; department: any; position: string; joinDate: Date; status: "ACTIVE"; salary: number; }' is not assignable to type '(Without<EmployeeCreateInput, EmployeeUncheckedCreateInput> & EmployeeUncheckedCreateInput) | (Without<...> & EmployeeCreateInput)'.
+  Type '{ firstName: string; lastName: string; email: string; phone: string | null; department: any; position: string; joinDate: Date; status: "ACTIVE"; salary: number; }' is not assignable to type 'Without<EmployeeUncheckedCreateInput, EmployeeCreateInput> & EmployeeCreateInput'.
+    Property 'organization' is missing in type '{ firstName: string; lastName: string; email: string; phone: string | null; department: any; position: string; joinDate: Date; status: "ACTIVE"; salary: number; }' but required in type 'EmployeeCreateInput'.
+src/app/api/hr/ats/applications/[id]/route.ts(52,48): error TS2551: Property 'department' does not exist on type '{ status: JobStatus; id: string; createdAt: Date; updatedAt: Date; organizationId: string; description: string; title: string; departmentId: string | null; location: string | null; ... 11 more ...; isPublished: boolean; }'. Did you mean 'departmentId'?
+src/app/api/hr/ats/applications/[id]/route.ts(63,13): error TS2353: Object literal may only specify known properties, and 'action' does not exist in type 'Without<ActivityCreateInput, ActivityUncheckedCreateInput> & ActivityUncheckedCreateInput'.
+src/app/api/hr/ats/applications/[id]/route.ts(68,60): error TS2551: Property 'department' does not exist on type '{ status: JobStatus; id: string; createdAt: Date; updatedAt: Date; organizationId: string; description: string; title: string; departmentId: string | null; location: string | null; ... 11 more ...; isPublished: boolean; }'. Did you mean 'departmentId'?
+src/app/api/hr/ats/candidates/route.ts(65,7): error TS2322: Type '{ firstName: any; lastName: any; email: any; phone: any; totalYearsExp: number; aiSummary: string; skills: { create: any; }; applications: { create: { jobId: any; status: "SCREENING"; matchScore: number; aiFlags: string[]; aiRecommendation: string; }; }; }' is not assignable to type '(Without<CandidateCreateInput, CandidateUncheckedCreateInput> & CandidateUncheckedCreateInput) | (Without<...> & CandidateCreateInput)'.
+  Type '{ firstName: any; lastName: any; email: any; phone: any; totalYearsExp: number; aiSummary: string; skills: { create: any; }; applications: { create: { jobId: any; status: "SCREENING"; matchScore: number; aiFlags: string[]; aiRecommendation: string; }; }; }' is not assignable to type 'Without<CandidateUncheckedCreateInput, CandidateCreateInput> & CandidateCreateInput'.
+    Property 'organization' is missing in type '{ firstName: any; lastName: any; email: any; phone: any; totalYearsExp: number; aiSummary: string; skills: { create: any; }; applications: { create: { jobId: any; status: "SCREENING"; matchScore: number; aiFlags: string[]; aiRecommendation: string; }; }; }' but required in type 'CandidateCreateInput'.
+src/app/api/hr/ats/jobs/route.ts(68,7): error TS2322: Type '{ title: any; department: any; location: any; employmentType: any; workModel: any; salaryMin: number | null; salaryMax: number | null; description: any; requirements: any; requiredSkills: any; minExperience: number; hiringManagerId: string; status: "OPEN"; isPublished: true; }' is not assignable to type '(Without<JobPositionCreateInput, JobPositionUncheckedCreateInput> & JobPositionUncheckedCreateInput) | (Without<...> & JobPositionCreateInput)'.
+  Type '{ title: any; department: any; location: any; employmentType: any; workModel: any; salaryMin: number | null; salaryMax: number | null; description: any; requirements: any; requiredSkills: any; minExperience: number; hiringManagerId: string; status: "OPEN"; isPublished: true; }' is not assignable to type 'Without<JobPositionUncheckedCreateInput, JobPositionCreateInput> & JobPositionCreateInput'.
+    Property 'organization' is missing in type '{ title: any; department: any; location: any; employmentType: any; workModel: any; salaryMin: number | null; salaryMax: number | null; description: any; requirements: any; requiredSkills: any; minExperience: number; hiringManagerId: string; status: "OPEN"; isPublished: true; }' but required in type 'JobPositionCreateInput'.
+src/app/api/hr/employees/route.ts(66,7): error TS2322: Type '{ firstName: any; lastName: any; email: any; phone: any; department: any; position: any; joinDate: Date; salary: number | null; status: any; }' is not assignable to type '(Without<EmployeeCreateInput, EmployeeUncheckedCreateInput> & EmployeeUncheckedCreateInput) | (Without<...> & EmployeeCreateInput)'.
+  Type '{ firstName: any; lastName: any; email: any; phone: any; department: any; position: any; joinDate: Date; salary: number | null; status: any; }' is not assignable to type 'Without<EmployeeUncheckedCreateInput, EmployeeCreateInput> & EmployeeCreateInput'.
+    Property 'organization' is missing in type '{ firstName: any; lastName: any; email: any; phone: any; department: any; position: any; joinDate: Date; salary: number | null; status: any; }' but required in type 'EmployeeCreateInput'.
+src/app/api/instructors/route.ts(78,7): error TS2322: Type '{ name: any; email: any; phone: any; bio: any; expertise: any; certifications: any; linkedinUrl: any; twitterUrl: any; websiteUrl: any; }' is not assignable to type '(Without<InstructorCreateInput, InstructorUncheckedCreateInput> & InstructorUncheckedCreateInput) | (Without<...> & InstructorCreateInput)'.
+  Type '{ name: any; email: any; phone: any; bio: any; expertise: any; certifications: any; linkedinUrl: any; twitterUrl: any; websiteUrl: any; }' is not assignable to type 'Without<InstructorUncheckedCreateInput, InstructorCreateInput> & InstructorCreateInput'.
+    Property 'organization' is missing in type '{ name: any; email: any; phone: any; bio: any; expertise: any; certifications: any; linkedinUrl: any; twitterUrl: any; websiteUrl: any; }' but required in type 'InstructorCreateInput'.
+src/app/api/leads/[id]/route.ts(3,10): error TS2305: Module '"@/lib/server/services/leads.service"' has no exported member 'getLeadById'.
+src/app/api/leads/[id]/route.ts(41,24): error TS2554: Expected 5 arguments, but got 4.
+src/app/api/leads/[id]/route.ts(65,11): error TS2554: Expected 4 arguments, but got 3.
+src/app/api/leads/route.ts(26,55): error TS2345: Argument of type '{ search: string | undefined; status: string | undefined; source: string | undefined; course: string | undefined; page: number; limit: number; }' is not assignable to parameter of type 'string'.
+src/app/api/leads/route.ts(70,24): error TS2554: Expected 3 arguments, but got 2.
+src/app/api/leads/saas-route.ts(3,10): error TS2305: Module '"@/lib/server/auth"' has no exported member 'getUserFromRequest'.
+src/app/api/leads/stats/route.ts(39,27): error TS2551: Property 'admin' does not exist on type '{ readonly ADMIN: "admin"; readonly MANAGER: "manager"; readonly SALES: "sales"; readonly MARKETING: "marketing"; readonly HR: "hr"; readonly FINANCE: "finance"; readonly INSTRUCTOR: "instructor"; readonly EMPLOYEE: "employee"; readonly USER: "user"; readonly SUPER_ADMIN: "super_admin"; }'. Did you mean 'ADMIN'?
+src/app/api/leads/stats/route.ts(40,27): error TS2339: Property 'SALES_ADMIN_MANAGER' does not exist on type '{ readonly ADMIN: "admin"; readonly MANAGER: "manager"; readonly SALES: "sales"; readonly MARKETING: "marketing"; readonly HR: "hr"; readonly FINANCE: "finance"; readonly INSTRUCTOR: "instructor"; readonly EMPLOYEE: "employee"; readonly USER: "user"; readonly SUPER_ADMIN: "super_admin"; }'.
+src/app/api/marketing/campaigns/route.ts(90,7): error TS2322: Type '{ name: any; description: any; source: any; status: any; budget: any; startDate: Date | null; endDate: Date | null; createdBy: string; }' is not assignable to type '(Without<CampaignCreateInput, CampaignUncheckedCreateInput> & CampaignUncheckedCreateInput) | (Without<...> & CampaignCreateInput)'.
+  Type '{ name: any; description: any; source: any; status: any; budget: any; startDate: Date | null; endDate: Date | null; createdBy: string; }' is not assignable to type 'Without<CampaignUncheckedCreateInput, CampaignCreateInput> & CampaignCreateInput'.
+    Property 'organization' is missing in type '{ name: any; description: any; source: any; status: any; budget: any; startDate: Date | null; endDate: Date | null; createdBy: string; }' but required in type 'CampaignCreateInput'.
+src/app/api/reports/generate/route.ts(81,14): error TS2552: Cannot find name 'NextResponse'. Did you mean 'Response'?
+src/app/api/sales-team/leaderboard/route.ts(28,22): error TS2322: Type '"SALES_REP"' is not assignable to type 'UserRole'.
+src/app/api/sales-team/leaderboard/route.ts(28,35): error TS2820: Type '"SALES"' is not assignable to type 'UserRole'. Did you mean '"sales"'?
+src/app/api/sales-team/leaderboard/route.ts(28,44): error TS2820: Type '"MANAGER"' is not assignable to type 'UserRole'. Did you mean '"manager"'?
+src/app/api/sales-team/leaderboard/route.ts(28,55): error TS2820: Type '"ADMIN"' is not assignable to type 'UserRole'. Did you mean '"admin"'?
+src/app/api/search/advanced/route.ts(126,14): error TS2552: Cannot find name 'NextResponse'. Did you mean 'Response'?
+src/app/api/search/advanced/route.ts(456,21): error TS2322: Type 'string' is not assignable to type 'ActivityType | EnumActivityTypeFilter<"Activity"> | undefined'.
+src/app/api/search/advanced/route.ts(464,9): error TS2322: Type '{ OR: ({ type: { contains: string; mode: string; }; description?: undefined; } | { description: { contains: string; mode: "insensitive"; }; type?: undefined; })[]; }[]' is not assignable to type 'ActivityWhereInput[]'.
+  Type '{ OR: ({ type: { contains: string; mode: string; }; description?: undefined; } | { description: { contains: string; mode: "insensitive"; }; type?: undefined; })[]; }' is not assignable to type 'ActivityWhereInput'.
+    Types of property 'OR' are incompatible.
+      Type '({ type: { contains: string; mode: string; }; description?: undefined; } | { description: { contains: string; mode: "insensitive"; }; type?: undefined; })[]' is not assignable to type 'ActivityWhereInput[]'.
+        Type '{ type: { contains: string; mode: string; }; description?: undefined; } | { description: { contains: string; mode: "insensitive"; }; type?: undefined; }' is not assignable to type 'ActivityWhereInput'.
+          Type '{ type: { contains: string; mode: string; }; description?: undefined; }' is not assignable to type 'ActivityWhereInput'.
+            Types of property 'type' are incompatible.
+              Type '{ contains: string; mode: string; }' is not assignable to type 'ActivityType | EnumActivityTypeFilter<"Activity"> | undefined'.
+src/app/api/search/advanced/route.ts(541,9): error TS2322: Type '{ OR: ({ name: { contains: string; mode: "insensitive"; }; email?: undefined; organization?: undefined; } | { email: { contains: string; mode: "insensitive"; }; name?: undefined; organization?: undefined; } | { ...; })[]; }[]' is not assignable to type 'UserWhereInput[]'.
+  Type '{ OR: ({ name: { contains: string; mode: "insensitive"; }; email?: undefined; organization?: undefined; } | { email: { contains: string; mode: "insensitive"; }; name?: undefined; organization?: undefined; } | { ...; })[]; }' is not assignable to type 'UserWhereInput'.
+    Types of property 'OR' are incompatible.
+      Type '({ name: { contains: string; mode: "insensitive"; }; email?: undefined; organization?: undefined; } | { email: { contains: string; mode: "insensitive"; }; name?: undefined; organization?: undefined; } | { ...; })[]' is not assignable to type 'UserWhereInput[]'.
+        Type '{ name: { contains: string; mode: "insensitive"; }; email?: undefined; organization?: undefined; } | { email: { contains: string; mode: "insensitive"; }; name?: undefined; organization?: undefined; } | { ...; }' is not assignable to type 'UserWhereInput'.
+          Type '{ organization: { contains: string; mode: string; }; name?: undefined; email?: undefined; }' is not assignable to type 'UserWhereInput'.
+            Types of property 'organization' are incompatible.
+              Type '{ contains: string; mode: string; }' is not assignable to type '(Without<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> & OrganizationWhereInput) | (Without<...> & OrganizationNullableScalarRelationFilter) | null | undefined'.
+src/app/api/search/advanced/route.ts(624,14): error TS2552: Cannot find name 'NextResponse'. Did you mean 'Response'?
+src/app/api/search/route.ts(47,9): error TS2353: Object literal may only specify known properties, and 'job' does not exist in type 'CandidateWhereInput'.
+src/app/api/time-tracking/all-time/route.ts(4,10): error TS2305: Module '"@/lib/server/auth"' has no exported member 'requireAdmin'.
+src/app/api/time-tracking/track-page/route.ts(41,9): error TS2322: Type '"PAGE_VIEW"' is not assignable to type 'ActivityType | undefined'.
+src/app/api/users/[id]/route.ts(3,10): error TS2305: Module '"@/lib/server/auth"' has no exported member 'requireAdmin'.
+src/app/api/users/[id]/route.ts(9,13): error TS2451: Cannot redeclare block-scoped variable 'user'.
+src/app/api/users/[id]/route.ts(29,11): error TS2451: Cannot redeclare block-scoped variable 'user'.
+src/app/api/users/[id]/unlock/route.ts(3,10): error TS2305: Module '"@/lib/server/auth"' has no exported member 'requireAdmin'.
+src/app/api/users/route.ts(3,10): error TS2305: Module '"@/lib/server/auth"' has no exported member 'requireAdmin'.
+src/app/api/v2/leads/route.ts(26,65): error TS2345: Argument of type '{ search: string | undefined; status: string | undefined; source: string | undefined; course: string | undefined; page: number; limit: number; }' is not assignable to parameter of type 'string'.
+src/app/api/v2/leads/route.ts(82,24): error TS2554: Expected 3 arguments, but got 2.
+src/app/api/v2/security-log/route.ts(28,24): error TS2304: Cannot find name 'req'.
+src/app/api/v2/security-log/route.ts(31,16): error TS2304: Cannot find name 'req'.
+src/app/api/v2/security-log/route.ts(31,54): error TS2304: Cannot find name 'req'.
+src/app/api/v2/security-log/route.ts(51,23): error TS2304: Cannot find name 'req'.
+src/components/ui/universal-search.tsx(95,33): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/contexts/AuthContext-production.tsx(43,12): error TS2678: Type 'AuthState.HYDRATING' is not comparable to type 'AuthState.ANONYMOUS'.
+src/contexts/AuthContext-production.tsx(45,12): error TS2678: Type 'AuthState.AUTHENTICATED' is not comparable to type 'AuthState.ANONYMOUS'.
+src/contexts/AuthContext-production.tsx(47,12): error TS2678: Type 'AuthState.REFRESHING' is not comparable to type 'AuthState.ANONYMOUS'.
+src/contexts/AuthContext-production.tsx(51,12): error TS2678: Type 'AuthState.EXPIRED' is not comparable to type 'AuthState.ANONYMOUS'.
+src/contexts/AuthContext-production.tsx(53,12): error TS2678: Type 'AuthState.ERROR' is not comparable to type 'AuthState.ANONYMOUS'.
+src/contexts/AuthContext-production.tsx(74,30): error TS2345: Argument of type 'AuthKernelState' is not assignable to parameter of type 'Readonly<{ status: AuthState.ANONYMOUS; user: null; version: 0; }>'.
+  Types of property 'status' are incompatible.
+    Type 'AuthState' is not assignable to type 'AuthState.ANONYMOUS'.
+src/domain/auth/kernel.ts(8,18): error TS2740: Type '{ user: (Permission.READ_LEADS | Permission.WRITE_LEADS | Permission.READ_DEALS | Permission.WRITE_DEALS)[]; sales: (Permission.READ_LEADS | Permission.WRITE_LEADS | Permission.DELETE_LEADS | Permission.READ_DEALS | Permission.WRITE_DEALS | Permission.DELETE_DEALS | Permission.CONVERT_LEADS)[]; manager: Permission[]...' is missing the following properties from type 'Record<RoleType, Permission[]>': marketing, hr, finance, instructor, and 2 more.
+src/domain/auth/kernel.ts(63,12): error TS7053: Element implicitly has an 'any' type because expression of type 'RoleType' can't be used to index type '{ user: number; sales: number; manager: number; admin: number; }'.
+  Property 'marketing' does not exist on type '{ user: number; sales: number; manager: number; admin: number; }'.
+src/domain/auth/kernel.ts(63,40): error TS7053: Element implicitly has an 'any' type because expression of type 'RoleType' can't be used to index type '{ user: number; sales: number; manager: number; admin: number; }'.
+  Property 'marketing' does not exist on type '{ user: number; sales: number; manager: number; admin: number; }'.
+src/domain/auth/kernel.ts(301,9): error TS7053: Element implicitly has an 'any' type because expression of type 'RoleType' can't be used to index type '{ user: number; sales: number; manager: number; admin: number; }'.
+  Property 'marketing' does not exist on type '{ user: number; sales: number; manager: number; admin: number; }'.
+src/domain/auth/kernel.ts(301,37): error TS7053: Element implicitly has an 'any' type because expression of type 'RoleType' can't be used to index type '{ user: number; sales: number; manager: number; admin: number; }'.
+  Property 'marketing' does not exist on type '{ user: number; sales: number; manager: number; admin: number; }'.
+src/domain/deal/rules.ts(59,11): error TS2739: Type '{ OPEN: ("LOST" | "WON")[]; WON: never[]; LOST: "OPEN"[]; }' is missing the following properties from type 'Record<DealStage, DealStage[]>': DISCOVERY, QUALIFICATION, PROPOSAL, NEGOTIATION
+src/domain/infrastructure/repositories/activity.repository.ts(21,9): error TS2322: Type 'ActivityType' is not assignable to type 'ActivityType | undefined'.
+src/domain/infrastructure/repositories/activity.repository.ts(31,11): error TS2322: Type '{ OR: ({ leadId: string; } | { dealId: string; } | { id: string; })[]; user: { organization: string; }; } | { OR: ({ leadId: string; } | { dealId: string; } | { id: string; })[]; user?: undefined; }' is not assignable to type 'ActivityWhereInput'.
+  Type '{ OR: ({ leadId: string; } | { dealId: string; } | { id: string; })[]; user: { organization: string; }; }' is not assignable to type 'ActivityWhereInput'.
+    Types of property 'user' are incompatible.
+      Type '{ organization: string; }' is not assignable to type '(Without<UserNullableScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserNullableScalarRelationFilter> & UserNullableScalarRelationFilter) | null | undefined'.
+        Type '{ organization: string; }' is not assignable to type '(Without<UserNullableScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserNullableScalarRelationFilter> & UserNullableScalarRelationFilter)'.
+          Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserNullableScalarRelationFilter> & UserNullableScalarRelationFilter'.
+            Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserNullableScalarRelationFilter>'.
+              Types of property 'organization' are incompatible.
+                Type 'string' is not assignable to type 'undefined'.
+src/domain/infrastructure/repositories/activity.repository.ts(43,55): error TS2345: Argument of type '{ user: { organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; } | null; } & { ...; }' is not assignable to parameter of type '{ id: string; userId: string | null; leadId: string | null; dealId: string | null; type: string; description: string | null; createdAt: Date; user?: { organization: string | null; } | null | undefined; }'.
+  Types of property 'user' are incompatible.
+    Type '{ organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; } | null' is not assignable to type '{ organization: string | null; } | null | undefined'.
+      Type '{ organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; }' is not assignable to type '{ organization: string | null; }'.
+        Types of property 'organization' are incompatible.
+          Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null' is not assignable to type 'string | null'.
+            Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; }' is not assignable to type 'string'.
+src/domain/infrastructure/repositories/activity.repository.ts(68,11): error TS2322: Type '{ user: { organization: string; }; } | { user?: undefined; }' is not assignable to type 'ActivityWhereInput'.
+  Type '{ user: { organization: string; }; }' is not assignable to type 'ActivityWhereInput'.
+    Types of property 'user' are incompatible.
+      Type '{ organization: string; }' is not assignable to type '(Without<UserNullableScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserNullableScalarRelationFilter> & UserNullableScalarRelationFilter) | null | undefined'.
+        Type '{ organization: string; }' is not assignable to type '(Without<UserNullableScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserNullableScalarRelationFilter> & UserNullableScalarRelationFilter)'.
+          Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserNullableScalarRelationFilter> & UserNullableScalarRelationFilter'.
+            Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserNullableScalarRelationFilter>'.
+              Types of property 'organization' are incompatible.
+                Type 'string' is not assignable to type 'undefined'.
+src/domain/infrastructure/repositories/activity.repository.ts(75,15): error TS2322: Type 'string' is not assignable to type 'ActivityType | EnumActivityTypeFilter<"Activity"> | undefined'.
+src/domain/infrastructure/repositories/activity.repository.ts(90,59): error TS2345: Argument of type '{ user: { organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; } | null; } & { ...; }' is not assignable to parameter of type '{ id: string; userId: string | null; leadId: string | null; dealId: string | null; type: string; description: string | null; createdAt: Date; user?: { organization: string | null; } | null | undefined; }'.
+  Types of property 'user' are incompatible.
+    Type '{ organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; } | null' is not assignable to type '{ organization: string | null; } | null | undefined'.
+      Type '{ organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; }' is not assignable to type '{ organization: string | null; }'.
+        Types of property 'organization' are incompatible.
+          Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null' is not assignable to type 'string | null'.
+            Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; }' is not assignable to type 'string'.
+src/domain/infrastructure/repositories/deal.repository.ts(15,7): error TS2322: Type '{ owner: { organization: string; }; id: string; isDeleted: false; } | { owner?: undefined; id: string; isDeleted: false; }' is not assignable to type 'DealWhereInput | undefined'.
+  Type '{ owner: { organization: string; }; id: string; isDeleted: false; }' is not assignable to type 'DealWhereInput'.
+    Types of property 'owner' are incompatible.
+      Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter) | undefined'.
+        Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter)'.
+          Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter'.
+            Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter>'.
+              Types of property 'organization' are incompatible.
+                Type 'string' is not assignable to type 'undefined'.
+src/domain/infrastructure/repositories/deal.repository.ts(30,7): error TS2322: Type '{ owner: { organization: string; }; leadId: string; isDeleted: false; } | { owner?: undefined; leadId: string; isDeleted: false; }' is not assignable to type 'DealWhereInput | undefined'.
+  Type '{ owner: { organization: string; }; leadId: string; isDeleted: false; }' is not assignable to type 'DealWhereInput'.
+    Types of property 'owner' are incompatible.
+      Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter) | undefined'.
+        Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter)'.
+          Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter'.
+            Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter>'.
+              Types of property 'organization' are incompatible.
+                Type 'string' is not assignable to type 'undefined'.
+src/domain/infrastructure/repositories/deal.repository.ts(57,33): error TS2345: Argument of type '{ owner: { organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; }; } & { ...; }' is not assignable to parameter of type '{ id: string; userId: string; leadId: string; title: string; value: number | null; stage: DealStage; createdAt: Date; updatedAt: Date; owner?: { organization: string | null; } | null | undefined; }'.
+  The types of 'owner.organization' are incompatible between these types.
+    Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null' is not assignable to type 'string | null'.
+      Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; }' is not assignable to type 'string'.
+src/domain/infrastructure/repositories/deal.repository.ts(73,33): error TS2345: Argument of type '{ owner: { organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; }; } & { ...; }' is not assignable to parameter of type '{ id: string; userId: string; leadId: string; title: string; value: number | null; stage: DealStage; createdAt: Date; updatedAt: Date; owner?: { organization: string | null; } | null | undefined; }'.
+  The types of 'owner.organization' are incompatible between these types.
+    Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null' is not assignable to type 'string | null'.
+      Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; }' is not assignable to type 'string'.
+src/domain/infrastructure/repositories/deal.repository.ts(98,11): error TS2322: Type '{ isDeleted: false; owner: { organization: string; }; } | { isDeleted: false; owner?: undefined; }' is not assignable to type 'DealWhereInput'.
+  Type '{ isDeleted: false; owner: { organization: string; }; }' is not assignable to type 'DealWhereInput'.
+    Types of property 'owner' are incompatible.
+      Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter) | undefined'.
+        Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter)'.
+          Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter'.
+            Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter>'.
+              Types of property 'organization' are incompatible.
+                Type 'string' is not assignable to type 'undefined'.
+src/domain/infrastructure/repositories/deal.repository.ts(127,50): error TS2345: Argument of type '{ lead: { name: string; id: string; email: string | null; }; owner: { organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; }; } & { ...; }' is not assignable to parameter of type '{ id: string; userId: string; leadId: string; title: string; value: number | null; stage: DealStage; createdAt: Date; updatedAt: Date; owner?: { organization: string | null; } | null | undefined; }'.
+  The types of 'owner.organization' are incompatible between these types.
+    Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null' is not assignable to type 'string | null'.
+      Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; }' is not assignable to type 'string'.
+src/domain/infrastructure/repositories/lead.repository.ts(16,7): error TS2322: Type '{ owner: { organization: string; }; id: string; isDeleted: false; } | { owner?: undefined; id: string; isDeleted: false; }' is not assignable to type 'LeadWhereInput | undefined'.
+  Type '{ owner: { organization: string; }; id: string; isDeleted: false; }' is not assignable to type 'LeadWhereInput'.
+    Types of property 'owner' are incompatible.
+      Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter) | undefined'.
+        Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter)'.
+          Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter'.
+            Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter>'.
+              Types of property 'organization' are incompatible.
+                Type 'string' is not assignable to type 'undefined'.
+src/domain/infrastructure/repositories/lead.repository.ts(31,7): error TS2322: Type '{ owner: { organization: string; }; email: string; isDeleted: false; } | { owner?: undefined; email: string; isDeleted: false; }' is not assignable to type 'LeadWhereInput | undefined'.
+  Type '{ owner: { organization: string; }; email: string; isDeleted: false; }' is not assignable to type 'LeadWhereInput'.
+    Types of property 'owner' are incompatible.
+      Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter) | undefined'.
+        Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter)'.
+          Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter'.
+            Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter>'.
+              Types of property 'organization' are incompatible.
+                Type 'string' is not assignable to type 'undefined'.
+src/domain/infrastructure/repositories/lead.repository.ts(59,33): error TS2345: Argument of type '{ owner: { organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; }; } & { ...; }' is not assignable to parameter of type '{ id: string; userId: string; name: string; email: string | null; phone: string | null; status: LeadStatus; createdAt: Date; updatedAt: Date; owner?: { organization: string | null; } | null | undefined; }'.
+  The types of 'owner.organization' are incompatible between these types.
+    Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null' is not assignable to type 'string | null'.
+      Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; }' is not assignable to type 'string'.
+src/domain/infrastructure/repositories/lead.repository.ts(76,33): error TS2345: Argument of type '{ owner: { organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; }; } & { ...; }' is not assignable to parameter of type '{ id: string; userId: string; name: string; email: string | null; phone: string | null; status: LeadStatus; createdAt: Date; updatedAt: Date; owner?: { organization: string | null; } | null | undefined; }'.
+  The types of 'owner.organization' are incompatible between these types.
+    Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null' is not assignable to type 'string | null'.
+      Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; }' is not assignable to type 'string'.
+src/domain/infrastructure/repositories/lead.repository.ts(101,11): error TS2322: Type '{ isDeleted: false; owner: { organization: string; }; } | { isDeleted: false; owner?: undefined; }' is not assignable to type 'LeadWhereInput'.
+  Type '{ isDeleted: false; owner: { organization: string; }; }' is not assignable to type 'LeadWhereInput'.
+    Types of property 'owner' are incompatible.
+      Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter) | undefined'.
+        Type '{ organization: string; }' is not assignable to type '(Without<UserScalarRelationFilter, UserWhereInput> & UserWhereInput) | (Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter)'.
+          Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter> & UserScalarRelationFilter'.
+            Type '{ organization: string; }' is not assignable to type 'Without<UserWhereInput, UserScalarRelationFilter>'.
+              Types of property 'organization' are incompatible.
+                Type 'string' is not assignable to type 'undefined'.
+src/domain/infrastructure/repositories/lead.repository.ts(124,53): error TS2345: Argument of type '{ owner: { organization: { name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null; }; } & { ...; }' is not assignable to parameter of type '{ id: string; userId: string; name: string; email: string | null; phone: string | null; status: LeadStatus; createdAt: Date; updatedAt: Date; owner?: { organization: string | null; } | null | undefined; }'.
+  The types of 'owner.organization' are incompatible between these types.
+    Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; } | null' is not assignable to type 'string | null'.
+      Type '{ name: string; id: string; slug: string; domain: string | null; logo: string | null; createdAt: Date; updatedAt: Date; isActive: boolean; settings: JsonValue; metadata: JsonValue; }' is not assignable to type 'string'.
+src/lib/auth/enterprise-auth-gateway.ts(19,11): error TS2430: Interface 'RequestConfig' incorrectly extends interface 'RequestInit'.
+  Types of property 'priority' are incompatible.
+    Type '"low" | "high" | "normal" | undefined' is not assignable to type 'RequestPriority | undefined'.
+      Type '"normal"' is not assignable to type 'RequestPriority | undefined'.
+src/lib/auth/enterprise-auth-gateway.ts(195,5): error TS2322: Type '{ headers: HeadersInit; credentials: "include"; signal: AbortSignal; skipAuth?: boolean; skipRetry?: boolean; priority?: "high" | "normal" | "low"; body?: BodyInit | null; ... 9 more ...; next?: NextFetchRequestConfig | undefined; }' is not assignable to type 'RequestInit'.
+  Types of property 'priority' are incompatible.
+    Type '"low" | "high" | "normal" | undefined' is not assignable to type 'RequestPriority | undefined'.
+      Type '"normal"' is not assignable to type 'RequestPriority | undefined'.
+src/lib/auth/rbac-middleware.ts(5,10): error TS2305: Module '"@/lib/server/auth"' has no exported member 'getUserFromRequest'.
+src/lib/auth/rbac-middleware.ts(25,7): error TS2740: Type '{ [x: number]: string[]; sales: ("read:own_profile" | "edit:own_profile" | "read:all_leads" | "edit:all_leads" | "read:all_deals" | "edit:all_deals")[]; manager: ("read:own_profile" | ... 9 more ... | "delete:deals")[]; admin: ("read:own_profile" | ... 11 more ... | "delete:deals")[]; }' is missing the following properties from type 'Record<RoleType, Permission[]>': user, marketing, hr, finance, and 3 more.
+src/lib/auth/rbac-middleware.ts(64,10): error TS2551: Property 'sales' does not exist on type '{ readonly ADMIN: "admin"; readonly MANAGER: "manager"; readonly SALES: "sales"; readonly MARKETING: "marketing"; readonly HR: "hr"; readonly FINANCE: "finance"; readonly INSTRUCTOR: "instructor"; readonly EMPLOYEE: "employee"; readonly USER: "user"; readonly SUPER_ADMIN: "super_admin"; }'. Did you mean 'SALES'?
+src/lib/auth/rbac-middleware.ts(72,10): error TS2551: Property 'manager' does not exist on type '{ readonly ADMIN: "admin"; readonly MANAGER: "manager"; readonly SALES: "sales"; readonly MARKETING: "marketing"; readonly HR: "hr"; readonly FINANCE: "finance"; readonly INSTRUCTOR: "instructor"; readonly EMPLOYEE: "employee"; readonly USER: "user"; readonly SUPER_ADMIN: "super_admin"; }'. Did you mean 'MANAGER'?
+src/lib/auth/rbac-middleware.ts(85,10): error TS2551: Property 'admin' does not exist on type '{ readonly ADMIN: "admin"; readonly MANAGER: "manager"; readonly SALES: "sales"; readonly MARKETING: "marketing"; readonly HR: "hr"; readonly FINANCE: "finance"; readonly INSTRUCTOR: "instructor"; readonly EMPLOYEE: "employee"; readonly USER: "user"; readonly SUPER_ADMIN: "super_admin"; }'. Did you mean 'ADMIN'?
+src/lib/auth/rbac-middleware.ts(100,10): error TS2339: Property 'SALES_ADMIN_MANAGER' does not exist on type '{ readonly ADMIN: "admin"; readonly MANAGER: "manager"; readonly SALES: "sales"; readonly MARKETING: "marketing"; readonly HR: "hr"; readonly FINANCE: "finance"; readonly INSTRUCTOR: "instructor"; readonly EMPLOYEE: "employee"; readonly USER: "user"; readonly SUPER_ADMIN: "super_admin"; }'.
+src/lib/auth/rbac-middleware.ts(160,37): error TS2304: Cannot find name 'UserRole'.
+src/lib/auth/usage-example.tsx(13,11): error TS2339: Property 'user' does not exist on type 'AuthContextType'.
+src/lib/auth/usage-example.tsx(29,11): error TS2339: Property 'user' does not exist on type 'AuthContextType'.
+src/lib/auth/usage-example.tsx(135,11): error TS2339: Property 'user' does not exist on type 'AuthContextType'.
+src/lib/enum-mappers.ts(36,14): error TS2314: Generic type 'Record' requires 2 type argument(s).
+src/lib/enum-mappers.ts(40,12): error TS2693: 'RoleType' only refers to a type, but is being used as a value here.
+src/lib/enum-mappers.ts(41,14): error TS2693: 'RoleType' only refers to a type, but is being used as a value here.
+src/lib/enum-mappers.ts(42,12): error TS2693: 'RoleType' only refers to a type, but is being used as a value here.
+src/lib/enum-mappers.ts(43,32): error TS2339: Property 'SALES_ADMIN_MANAGER' does not exist on type '{ readonly ADMIN: "admin"; readonly MANAGER: "manager"; readonly SALES: "sales"; readonly MARKETING: "marketing"; readonly HR: "hr"; readonly FINANCE: "finance"; readonly INSTRUCTOR: "instructor"; readonly EMPLOYEE: "employee"; readonly USER: "user"; readonly SUPER_ADMIN: "super_admin"; }'.
+src/lib/server/auth.ts(86,13): error TS2352: Conversion of type '{ id: string; name: string; email: string; role: $Enums.UserRole; organizationId: string | null; createdAt: string; }' to type 'UserResponse' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Types of property 'createdAt' are incompatible.
+    Type 'string' is not comparable to type 'Date'.
+src/lib/server/middleware/auth.ts(5,10): error TS2305: Module '"@/lib/server/auth"' has no exported member 'getUserFromRequest'.
+src/lib/server/middleware/auth.ts(19,3): error TS2322: Type '{ user: UserResponse | null; error?: string | undefined; }' is not assignable to type 'RequireAuthResult'.
+  Types of property 'error' are incompatible.
+    Type 'string | undefined' is not assignable to type '"UNAUTHORIZED" | "INVALID_TOKEN" | "SESSION_EXPIRED" | undefined'.
+      Type 'string' is not assignable to type '"UNAUTHORIZED" | "INVALID_TOKEN" | "SESSION_EXPIRED" | undefined'.
+src/lib/server/saas-auth.ts(138,28): error TS2551: Property 'admin' does not exist on type '{ readonly ADMIN: "admin"; readonly MANAGER: "manager"; readonly SALES: "sales"; readonly MARKETING: "marketing"; readonly HR: "hr"; readonly FINANCE: "finance"; readonly INSTRUCTOR: "instructor"; readonly EMPLOYEE: "employee"; readonly USER: "user"; readonly SUPER_ADMIN: "super_admin"; }'. Did you mean 'ADMIN'?
+src/lib/server/saas-auth.ts(139,28): error TS2339: Property 'SALES_ADMIN_MANAGER' does not exist on type '{ readonly ADMIN: "admin"; readonly MANAGER: "manager"; readonly SALES: "sales"; readonly MARKETING: "marketing"; readonly HR: "hr"; readonly FINANCE: "finance"; readonly INSTRUCTOR: "instructor"; readonly EMPLOYEE: "employee"; readonly USER: "user"; readonly SUPER_ADMIN: "super_admin"; }'.
+src/lib/server/services/ats.service.ts(16,14): error TS2339: Property 'job' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+src/lib/server/services/ats.service.ts(24,44): error TS7006: Parameter 'r' implicitly has an 'any' type.
+src/lib/server/services/ats.service.ts(25,58): error TS7006: Parameter 's' implicitly has an 'any' type.
+src/lib/server/services/ats.service.ts(26,44): error TS7006: Parameter 's' implicitly has an 'any' type.
+src/lib/server/services/ats.service.ts(60,17): error TS2353: Object literal may only specify known properties, and 'aiScore' does not exist in type '(Without<ApplicationUpdateInput, ApplicationUncheckedUpdateInput> & ApplicationUncheckedUpdateInput) | (Without<...> & ApplicationUpdateInput)'.
+src/lib/server/services/audit.service.ts(18,25): error TS2551: Property 'activityLog' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'. Did you mean 'activity'?
+src/lib/server/services/automation.service.ts(122,20): error TS2322: Type '"FINANCE_MANAGER"' is not assignable to type 'UserRole'.
+src/lib/server/services/automation.service.ts(122,39): error TS2322: Type '"OWNER"' is not assignable to type 'UserRole'.
+src/lib/server/services/deals.service.ts(42,13): error TS2322: Type 'string' is not assignable to type 'DealStage | EnumDealStageFieldUpdateOperationsInput | undefined'.
+src/lib/server/services/deals.service.ts(50,5): error TS2353: Object literal may only specify known properties, and 'organizationId' does not exist in type '{ type: ActivityType; description?: string | undefined; userId?: string | undefined; leadId?: string | undefined; dealId?: string | undefined; }'.
+src/lib/server/services/leads.service.ts(72,5): error TS2353: Object literal may only specify known properties, and 'organizationId' does not exist in type '{ type: ActivityType; description?: string | undefined; userId?: string | undefined; leadId?: string | undefined; dealId?: string | undefined; }'.
+src/lib/server/services/permission.service.ts(22,3): error TS2353: Object literal may only specify known properties, and 'OWNER' does not exist in type 'Record<RoleType, Partial<Record<ResourceType, PermissionAction[]>>>'.
+src/services/deal.service.fixed.ts(150,11): error TS2322: Type '"DEAL_STAGE_CHANGED"' is not assignable to type 'ActivityType | undefined'.
+src/services/deal.service.new.ts(153,11): error TS2322: Type '"DEAL_STAGE_CHANGED"' is not assignable to type 'ActivityType | undefined'.
+src/services/deal.service.ts(118,11): error TS2322: Type '"DEAL_STAGE_CHANGED"' is not assignable to type 'ActivityType | undefined'.
+src/services/deal.service.ts(167,9): error TS2322: Type '"DEAL_WON"' is not assignable to type 'ActivityType | undefined'.
+src/services/deal.service.ts(202,9): error TS2322: Type '"DEAL_LOST"' is not assignable to type 'ActivityType | undefined'.

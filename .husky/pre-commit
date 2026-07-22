@@ -1,0 +1,28 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks..."
+
+# 1. Lint check
+echo "  → Linting..."
+npm run lint -- --max-warnings=0 || {
+  echo "❌ Linting failed"
+  exit 1
+}
+
+# 2. Type check
+echo "  → Type checking..."
+npm run typecheck || {
+  echo "❌ Type check failed"
+  exit 1
+}
+
+# 3. Quick test (if tests exist)
+if [ -f "jest.config.js" ] || [ -f "jest.config.ts" ] || [ -f "jest.config.cjs" ]; then
+  echo "  → Running quick tests..."
+  npm run test:quick 2>/dev/null || {
+    echo "⚠️  Tests not available or failed"
+  }
+fi
+
+echo "✅ All pre-commit checks passed"

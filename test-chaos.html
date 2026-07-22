@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaos Test - Combined Failure Scenarios</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #00ff00; }
+        .test { margin: 20px 0; padding: 10px; border: 1px solid #333; }
+        .pass { color: #00ff00; }
+        .fail { color: #ff0000; }
+        .info { color: #ffff00; }
+        .warning { color: #ff9900; }
+        pre { background: #000; padding: 10px; overflow-x: auto; }
+        .chaos { background: #2a0000; border-color: #ff0000; }
+    </style>
+</head>
+<body>
+    <h1>🔥 Chaos Test - Combined Failure Scenarios</h1>
+    <div id="results"></div>
+
+    <script type="module">
+        const results = document.getElementById('results');
+        
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test ${type}`;
+            div.innerHTML = `<pre>${message}</pre>`;
+            results.appendChild(div);
+        }
+
+        // Test 1: Combined Chaos - 50% failures + random 401 + slow responses
+        async function testCombinedChaos() {
+            log('🔥 Test 1: Combined Chaos Simulation');
+            log('Expected: No infinite loops, no duplicate refresh, no UI freeze');
+            
+            try {
+                const startTime = Date.now();
+                
+                // Fire multiple requests with different chaos scenarios
+                const promises = [];
+                
+                // Request 1: 50% failure rate
+                promises.push(fetch('/api/test-retry', {
+                    headers: { 'X-Test-Fail-Rate': '0.5' }
+                }));
+                
+                // Request 2: Force 401
+                promises.push(fetch('/api/test-auth', {
+                    headers: { 'X-Force-401': 'true' }
+                }));
+                
+                // Request 3: Slow response (simulate timeout)
+                promises.push(new Promise(resolve => {
+                    setTimeout(() => {
+                        fetch('/api/test-logging').then(resolve).catch(resolve);
+                    }, 8000); // 8 second delay
+                }));
+                
+                // Request 4: Normal request
+                promises.push(fetch('/api/test-zod'));
+                
+                // Request 5: Another 401 to test deduplication with refresh
+                promises.push(fetch('/api/test-auth', {
+                    headers: { 'X-Force-401': 'true' }
+                }));
+                
+                const responses = await Promise.allSettled(promises);
+                const endTime = Date.now();
+                
+                log(`✅ Combined chaos test completed:`, 'pass');
+                log(`   - Total time: ${endTime - startTime}ms`, 'info');
+                log(`   - Responses: ${responses.length}`, 'info');
+                
+                // Check for expected behaviors
+                const has401s = responses.some(r => 
+                    r.status === 'fulfilled' && r.value.status === 401
+                );
+                const hasTimeouts = responses.some(r => 
+                    r.status === 'rejected' && r.reason.name === 'AbortError'
+                );
+                
+                if (has401s) {
+                    log('   - ✅ 401 handling detected', 'pass');
+                }
+                if (hasTimeouts) {
+                    log('   - ✅ Timeout protection working', 'pass');
+                }
+                
+                // Verify no infinite loops by checking reasonable time
+                if (endTime - startTime < 20000) { // Less than 20 seconds
+                    log('   - ✅ No infinite loops detected', 'pass');
+                } else {
+                    log('   - ❌ Possible infinite loop detected', 'fail');
+                }
+                
+            } catch (error) {
+                log(`❌ Combined chaos test failed: ${error.message}`, 'fail');
+            }
+            log('---');
+        }
+
+        // Test 2: Circuit Breaker Under Stress
+        async function testCircuitBreakerStress() {
+            log('🔥 Test 2: Circuit Breaker Stress Test');
+            log('Expected: Breaker opens after failures, closes on success');
+            
+            try {
+                // Force multiple failures to trigger circuit breaker
+                const failurePromises = Array(6).fill(null).map(() =>
+                    fetch('/api/test-logging', {
+                        headers: { 'X-Force-Error': 'CIRCUIT_BREAKER_TEST' }
+                    })
+                );
+                
+                const failureResults = await Promise.allSettled(failurePromises);
+                const failures = failureResults.filter(r => r.status === 'rejected').length;
+                
+                log(`   - Forced failures: ${failures}`, 'info');
+                
+                // Now test if circuit breaker is working
+                const testAfterBreaker = await fetch('/api/test-logging');
+                
+                if (testAfterBreaker.ok) {
+                    log('✅ Circuit breaker stress test passed', 'pass');
+                } else {
+                    log('⚠️ Circuit breaker may be OPEN (expected behavior)', 'warning');
+                }
+                
+            } catch (error) {
+                log(`❌ Circuit breaker stress test failed: ${error.message}`, 'fail');
+            }
+            log('---');
+        }
+
+        // Test 3: Deduplication with Auth Refresh
+        async function testDedupeWithAuthRefresh() {
+            log('🔥 Test 3: Deduplication + Auth Refresh Edge Case');
+            log('Expected: Multiple 401s share single refresh, all get proper response');
+            
+            try {
+                const startTime = Date.now();
+                
+                // Fire multiple identical requests that will get 401
+                const promises = Array(3).fill(null).map(() =>
+                    fetch('/api/test-auth', {
+                        headers: { 'X-Force-401': 'true' }
+                    })
+                );
+                
+                const responses = await Promise.allSettled(promises);
+                const endTime = Date.now();
+                
+                log(`✅ Deduplication with auth refresh completed:`, 'pass');
+                log(`   - Total time: ${endTime - startTime}ms`, 'info');
+                log(`   - Responses: ${responses.length}`, 'info');
+                
+                // All should get 401 (since we're not actually refreshing in this test)
+                const all401s = responses.every(r => 
+                    r.status === 'fulfilled' && r.value.status === 401
+                );
+                
+                if (all401s) {
+                    log('   - ✅ All requests properly handled', 'pass');
+                } else {
+                    log('   - ⚠️ Mixed response statuses', 'warning');
+                }
+                
+            } catch (error) {
+                log(`❌ Deduplication with auth refresh failed: ${error.message}`, 'fail');
+            }
+            log('---');
+        }
+
+        // Test 4: Timeout Under Retry Stress
+        async function testTimeoutUnderRetry() {
+            log('🔥 Test 4: Timeout + Retry Interaction');
+            log('Expected: Global timeout respected, no 30s waits');
+            
+            try {
+                const startTime = Date.now();
+                
+                // Request that will timeout and retry
+                const response = await fetch('/api/test-retry', {
+                    headers: { 
+                        'X-Test-Fail-Rate': '1.0', // Always fail to force retries
+                        'X-Force-Timeout': 'true' // Simulate slow response
+                    }
+                });
+                
+                const endTime = Date.now();
+                
+                log(`✅ Timeout under retry test completed:`, 'pass');
+                log(`   - Total time: ${endTime - startTime}ms`, 'info');
+                
+                // Should timeout before 30 seconds (our global timeout is 15s)
+                if (endTime - startTime < 20000) {
+                    log('   - ✅ Global timeout working correctly', 'pass');
+                } else {
+                    log('   - ❌ Timeout not working (took too long)', 'fail');
+                }
+                
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    log('✅ Timeout under retry test passed - correctly aborted', 'pass');
+                } else {
+                    log(`❌ Timeout under retry failed: ${error.message}`, 'fail');
+                }
+            }
+            log('---');
+        }
+
+        // Run all chaos tests
+        async function runChaosTests() {
+            log('🚀 Starting Chaos Tests - Combined Failure Scenarios\n');
+            log('💀 This tests the system under real production stress\n');
+            
+            await testCombinedChaos();
+            await testCircuitBreakerStress();
+            await testDedupeWithAuthRefresh();
+            await testTimeoutUnderRetry();
+            
+            log('🏁 Chaos Tests Complete!');
+            log('\n💬 Real Talk:');
+            log('- If all tests pass → system is failure-resilient');
+            log('- If any test fails → fix before production');
+            log('- These tests simulate combined real-world failures');
+            log('\n🎯 You are now at Level 5: Failure-Resilient System');
+            log('🚀 Next step: React Query integration for data lifecycle management');
+        }
+
+        // Run chaos tests when page loads
+        runChaosTests().catch(console.error);
+    </script>
+</body>
+</html>

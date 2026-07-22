@@ -1,0 +1,4 @@
+Your password reset link is:
+http://localhost:3000/reset-password/ad0396aa25ab53ac3a903d671926335fd0743bfd
+
+(This file was generated because email service is not configured)

@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-05-08T02:39:55.878Z",
+  "summary": {
+    "success": true,
+    "totalSteps": 2,
+    "passedSteps": 2
+  },
+  "steps": [
+    {
+      "stdout": null,
+      "name": "typescript",
+      "stderr": null,
+      "exitCode": 0,
+      "command": "npx tsc --noEmit --project tsconfig.auth.json",
+      "durationMs": 6240
+    },
+    {
+      "stdout": null,
+      "name": "architecture-guard",
+      "stderr": null,
+      "exitCode": 0,
+      "command": "node src\\lib\\auth-architecture-guard.js",
+      "durationMs": 1117
+    }
+  ]
+}

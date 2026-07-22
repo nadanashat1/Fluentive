@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+**/node_modules/
+*/node_modules/
+apps/*/node_modules/
+.next/*/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Lockfiles (choose one package manager)
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Next.js build output
+.next/
+out/
+dist/
+build/
+
+
+# Vercel (keep deployment files)
+# .vercel
+
+# Testing
+coverage/
+.nyc_output/
+
+# Debug
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.tmp/
+
+# Turbo
+.turbo/

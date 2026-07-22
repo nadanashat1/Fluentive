@@ -1,0 +1,74 @@
+{
+  "version": 2,
+  "framework": "nextjs",
+  "buildCommand": "prisma generate && npm run build",
+  "outputDirectory": ".next",
+  "functions": {
+    "src/app/api/ai/insights/route.ts": {
+      "memory": 1536,
+      "maxDuration": 25
+    },
+    "src/app/api/reports/generate/route.ts": {
+      "memory": 1536,
+      "maxDuration": 25
+    },
+    "src/app/api/search/advanced/route.ts": {
+      "memory": 1024,
+      "maxDuration": 20
+    },
+    "src/app/api/backup/restore/route.ts": {
+      "memory": 1536,
+      "maxDuration": 30
+    },
+    "src/app/api/backup/create/route.ts": {
+      "memory": 1024,
+      "maxDuration": 20
+    },
+    "src/app/api/admin/dashboard/route.ts": {
+      "memory": 1024,
+      "maxDuration": 20
+    },
+    "src/app/api/analytics/timeseries/route.ts": {
+      "memory": 1024,
+      "maxDuration": 20
+    },
+    "src/app/api/security/audit-logs/route.ts": {
+      "memory": 1024,
+      "maxDuration": 20
+    }
+  },
+  "regions": ["iad1"],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ]
+}

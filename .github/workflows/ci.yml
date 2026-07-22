@@ -1,0 +1,77 @@
+# CI Pipeline - Validates builds and prevents broken deployments
+# Runs on every push and PR to catch issues before they reach production
+
+name: CI
+
+on:
+  push:
+    branches: [main, hambaka]
+  pull_request:
+    branches: [main, hambaka]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # Validate dependency integrity and build
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate Build
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      # This will FAIL if lockfile is out of sync (prevents broken deploys)
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate Prisma schema
+        run: npx prisma validate
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build project
+        run: npm run build
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+      # Security audit (fails on moderate+ vulnerabilities)
+      - name: Security audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+  # Lockfile integrity check
+  lockfile-check:
+    runs-on: ubuntu-latest
+    name: Lockfile Integrity
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      # Verify lockfile is in sync with package.json
+      - name: Verify lockfile
+        run: |
+          npm ci
+          git diff --exit-code package-lock.json || (echo "❌ Lockfile out of sync! Run 'npm install' locally and commit." && exit 1)

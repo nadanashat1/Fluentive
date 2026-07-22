@@ -1,0 +1,69 @@
+# Development files (Vercel doesn't need these)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.next
+
+# Build artifacts (Vercel builds its own)
+out/
+dist/
+build/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Testing and coverage (not needed for deployment)
+coverage/
+.nyc_output/
+
+# Logs and temp files
+*.log
+.tmp/
+.cache/
+
+# Git files (Vercel handles these)
+.git/
+.gitignore
+
+# Documentation (keep reference but not needed for build)
+*.md
+!README.md
+
+# Test files (exclude from deployment)
+test/
+**/*.test.ts
+**/*.test.tsx
+
+# Exclude test files
+test-*.js
+production-test.js
+runtime-audit.js
+
+# Development scripts and tools
+scripts/
+tsconfig.json
+jest.config.js
+vitest.config.js
+
+# Development documentation
+*.md
+!README.md
+
+# Large dependencies not needed in production
+@testing-library/
+jest/
+vitest/
+msw/
+
+# Development environment files
+.env.development
+.env.local
+.env.test

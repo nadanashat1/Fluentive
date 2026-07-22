@@ -1,0 +1,31 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🔍 Running pre-push checks..."
+
+# Check if pushing to protected branches
+protected_branches="main production-stable"
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+for branch in $protected_branches; do
+  if [ "$current_branch" = "$branch" ]; then
+    echo "⚠️  You are pushing directly to $branch"
+    echo "    This should only be done via Pull Request"
+    echo "    Use: git checkout -b feature/xyz && git push origin feature/xyz"
+    echo ""
+    read -p "Are you sure? (y/N): " confirm
+    if [ "$confirm" != "y" ]; then
+      echo "❌ Push aborted"
+      exit 1
+    fi
+  fi
+done
+
+# Full build check
+echo "  → Building..."
+npm run build || {
+  echo "❌ Build failed - push aborted"
+  exit 1
+}
+
+echo "✅ Pre-push checks passed"

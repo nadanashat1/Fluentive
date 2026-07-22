@@ -1,0 +1,4 @@
+SELECT column_name 
+FROM information_schema.columns 
+WHERE table_name = 'User' 
+AND column_name IN ('email', 'password');

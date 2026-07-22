@@ -1,0 +1,436 @@
+// ==========================================
+// FLUENTIVE CRM - MULTI-TENANT SaaS SCHEMA
+// ==========================================
+// This schema enables multi-tenant SaaS architecture
+// where multiple companies can use the same application
+// with complete data isolation
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// TENANT (Organization/Company)
+// ==========================================
+model Tenant {
+  id              String    @id @default(cuid())
+  name            String
+  slug            String    @unique // URL-friendly identifier
+  
+  // Billing & Plan
+  plan            String    @default("free") // free, pro, enterprise
+  status          String    @default("active") // active, suspended, cancelled
+  
+  // Stripe Integration
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  stripePriceId      String?
+  
+  // Plan Limits
+  maxUsers        Int       @default(3)   // Free: 3, Pro: 10, Enterprise: unlimited
+  maxLeads        Int       @default(100) // Free: 100, Pro: 1000, Enterprise: unlimited
+  maxDeals        Int       @default(50)   // Free: 50, Pro: 500, Enterprise: unlimited
+  
+  // Feature Flags
+  features        Json      @default("{}")
+  
+  // Billing Period
+  billingPeriod   String?   // monthly, yearly
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  
+  // Metadata
+  settings        Json      @default("{}")
+  
+  // Relations
+  users           User[]
+  leads           Lead[]
+  deals           Deal[]
+  activityLogs    ActivityLog[]
+  invitations     TenantInvitation[]
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Indexes for SaaS queries
+  @@index([status])
+  @@index([plan])
+  @@index([stripeCustomerId])
+}
+
+// ==========================================
+// USER (Tenant Member)
+// ==========================================
+model User {
+  id                   String   @id @default(cuid())
+  
+  // Tenant Association (CRITICAL for SaaS)
+  tenantId             String
+  tenant               Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Profile
+  name                 String
+  email                String
+  password             String
+  
+  // Role & Permissions
+  role                 String   @default("member") // admin, manager, member
+  permissions          Json     @default("[]")
+  
+  // Authentication
+  isActive             Boolean  @default(true)
+  emailVerified        Boolean  @default(false)
+  emailVerifyToken     String?
+  twoFactorEnabled     Boolean  @default(false)
+  twoFactorSecret      String?
+  
+  // Security
+  resetPasswordToken   String?
+  resetPasswordExpire  DateTime?
+  loginAttemptCount    Int      @default(0)
+  lockUntil            DateTime?
+  passwordChangedAt    DateTime?
+  lastLoginAt          DateTime?
+  lastLoginIp          String?
+  
+  // Relations
+  leads                Lead[]
+  activityLogs         ActivityLog[]
+  refreshTokens        RefreshToken[]
+  sessions             Session[]
+  notes                LeadNote[]
+  uploadedAttachments  LeadAttachment[]
+  notifications        Notification[]
+  notificationPreferences NotificationPreferences?
+  activities           Activity[]
+  timeTrackings        TimeTracking[]
+  pageViews            PageView[]
+  dailyStats           DailyStats[]
+  
+  // Timestamps
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  
+  // Tenant-scoped uniqueness
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([tenantId, role])
+  @@index([email])
+}
+
+// ==========================================
+// TENANT INVITATION (Team Management)
+// ==========================================
+model TenantInvitation {
+  id          String   @id @default(cuid())
+  
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  email       String
+  role        String   @default("member")
+  invitedById String
+  token       String   @unique
+  
+  status      String   @default("pending") // pending, accepted, expired
+  expiresAt   DateTime
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([tenantId])
+  @@index([token])
+  @@index([email])
+}
+
+// ==========================================
+// LEAD (Tenant Data)
+// ==========================================
+model Lead {
+  id            String        @id @default(uuid())
+  
+  // Tenant Isolation (CRITICAL)
+  tenantId      String
+  tenant        Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Data
+  name          String
+  phone         String
+  email         String
+  course        String
+  source        String
+  status        String        @default("new")
+  priority      String        @default("medium")
+  
+  // Owner
+  ownerId       String
+  owner         User          @relation(fields: [ownerId], references: [id])
+  
+  // Details
+  photo         String?
+  tags          String[]      @default([])
+  followUpDate  DateTime?
+  lastFollowUp  DateTime?
+  
+  // Relations
+  activityLogs  ActivityLog[]
+  notes         LeadNote[]
+  attachments   LeadAttachment[]
+  
+  // Timestamps
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  // SaaS Indexes
+  @@index([tenantId])
+  @@index([tenantId, status])
+  @@index([tenantId, ownerId])
+  @@index([tenantId, priority])
+  @@index([tenantId, createdAt])
+  @@index([tenantId, email])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ==========================================
+// DEAL (Tenant Data)
+// ==========================================
+model Deal {
+  id              String   @id @default(uuid())
+  
+  // Tenant Isolation
+  tenantId        String
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Data
+  clientName      String
+  clientEmail     String?
+  clientPhone     String?
+  company         String?
+  source          String?
+  dealValue       Float?
+  timeline        String?
+  stage           String   @default("qualification")
+  priority        String   @default("warm")
+  assigneeName    String?
+  course          String?
+  internalNotes   String?
+  followUpDate    DateTime?
+  additionalNotes String?
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // SaaS Indexes
+  @@index([tenantId])
+  @@index([tenantId, stage])
+  @@index([tenantId, priority])
+  @@index([tenantId, createdAt])
+  @@index([stage])
+  @@index([createdAt])
+}
+
+// ==========================================
+// ACTIVITY LOG (Tenant Scoped)
+// ==========================================
+model ActivityLog {
+  id        String   @id @default(cuid())
+  
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  leadId    String?
+  lead      Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  
+  action    String
+  details   Json?
+  ipAddress String?
+  
+  createdAt DateTime @default(now())
+  
+  @@index([tenantId])
+  @@index([tenantId, createdAt])
+  @@index([tenantId, userId])
+  @@index([leadId])
+  @@index([createdAt])
+}
+
+// ==========================================
+// NOTIFICATION (Tenant Scoped)
+// ==========================================
+model Notification {
+  id          String   @id @default(cuid())
+  
+  tenantId    String
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type        String
+  title       String
+  message     String
+  isRead      Boolean  @default(false)
+  data        Json?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([tenantId])
+  @@index([userId])
+  @@index([userId, isRead])
+  @@index([createdAt])
+}
+
+// ==========================================
+// OTHER MODELS (Tenant Scoped)
+// ==========================================
+
+model LeadNote {
+  id        String   @id @default(cuid())
+  tenantId  String
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([tenantId])
+  @@index([leadId])
+}
+
+model LeadAttachment {
+  id           String   @id @default(cuid())
+  tenantId     String
+  leadId       String
+  lead         Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  uploadedById String
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id])
+  fileName     String
+  fileUrl      String
+  fileType     String?
+  fileSize     Int?
+  createdAt    DateTime @default(now())
+  
+  @@index([tenantId])
+  @@index([leadId])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+}
+
+model NotificationPreferences {
+  id                     String  @id @default(cuid())
+  userId                 String  @unique
+  user                   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emailEnabled           Boolean @default(true)
+  browserEnabled         Boolean @default(true)
+  leadCreatedEnabled     Boolean @default(true)
+  leadConvertedEnabled   Boolean @default(true)
+  dealWonEnabled         Boolean @default(true)
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  tenantId    String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String
+  description String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  
+  @@index([tenantId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model TimeTracking {
+  id           String   @id @default(cuid())
+  tenantId     String
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date         DateTime
+  loginTime    DateTime
+  logoutTime   DateTime?
+  totalMinutes Int      @default(0)
+  isActive     Boolean  @default(true)
+  lastActivity DateTime @default(now())
+  sessions     Int      @default(1)
+  userAgent    String?
+  ip           String?
+  
+  @@unique([userId, date])
+  @@index([tenantId])
+  @@index([userId])
+  @@index([date])
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  tenantId  String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  path      String
+  referrer  String?
+  userAgent String?
+  ip        String?
+  createdAt DateTime @default(now())
+  
+  @@index([tenantId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model DailyStats {
+  id             String   @id @default(cuid())
+  tenantId       String
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date           DateTime
+  leadsCreated   Int      @default(0)
+  leadsUpdated   Int      @default(0)
+  dealsCreated   Int      @default(0)
+  dealsWon       Int      @default(0)
+  callsMade      Int      @default(0)
+  emailsSent     Int      @default(0)
+  meetingsHeld   Int      @default(0)
+  
+  @@unique([userId, date])
+  @@index([tenantId])
+  @@index([userId])
+  @@index([date])
+}

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Lead" ALTER COLUMN "photo" DROP NOT NULL,
+ALTER COLUMN "photo" DROP DEFAULT;
