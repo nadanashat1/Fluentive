@@ -1,61 +1,42 @@
-# D Fluency CRM Frontend
+# Fluentive CRM
 
-## Run locally
+A full-stack CRM for language centers, built with Next.js and TypeScript. It manages the core operations of a language school - leads, students, users, sessions, and analytics - behind a secure dashboard.
+
+## Features
+
+- Authentication with JWT, registration, password reset, and TOTP-based two-factor authentication (QR code setup)
+- Dashboard with analytics, session tracking, user management, and summary views, visualized with Chart.js and Recharts
+- Leads module for tracking prospective students
+- Drag-and-drop interactions (dnd-kit) and animated UI (Framer Motion)
+- AI-assisted features through the OpenAI API
+- PostgreSQL database access through Prisma (hosted on Supabase)
+- Rate limiting and caching with Redis
+- Error monitoring with Sentry, analytics with Vercel Analytics
+- Jest test setup, API endpoint test suite, and CI scripts for lint, typecheck, audit, and performance gates
+
+## Tech stack
+
+- Next.js (App Router), React, TypeScript
+- Prisma + PostgreSQL (Supabase)
+- JWT + OTPAuth for authentication
+- Tailwind CSS, Framer Motion, Recharts, react-chartjs-2
+- Redis (ioredis), Sentry, OpenAI
+- Deployed with Vercel
+
+## Getting started
 
 ```bash
 npm install
 npm run dev
 ```
 
-`npm run dev` is the recommended single command. It now:
-- starts backend first on `http://localhost:5000`
-- waits until backend health is ready (`/health`)
-- then starts frontend (prefers `3000`, auto-picks another free port if needed)
+The app expects environment variables for the database, JWT secret, and app URL. Copy `.env.example` to `.env` and fill in your own values:
 
-## Dev workflow notes (Windows)
-
-- **Use one entrypoint**: run `npm run dev` **from the repo root**. This starts:
-  - Backend (Express) on `http://localhost:5000` first
-  - Frontend (Next.js) after backend readiness check
-- **Avoid running backend separately** while `npm run dev` is active (that's the common cause of `Port 5000 is already in use`).
-- **If port 5000 is busy**, the dev runner fails fast with guidance.
-- **If port 3000 is busy**, frontend auto-selects the next free port.
-- To inspect who holds a port:
-
-```bash
-node scripts/ports.js 5000
-node scripts/ports.js 3000
+```
+DATABASE_URL=        # PostgreSQL connection string
+DIRECT_URL=          # direct (non-pooled) connection string
+JWT_SECRET=          # generate with: openssl rand -base64 32
+NEXT_PUBLIC_APP_URL= # e.g. http://localhost:3000
 ```
 
-- **If you used Docker Compose before**, stop containers first because `docker-compose.yml` maps `5000:5000`:
-  - `docker compose down`
-
-## Deploy to Vercel
-
-### Quick Deploy
-
-1. **Prepare for deployment:**
-   ```bash
-   node scripts/prepare-for-deploy.js
-   ```
-
-2. **Deploy Backend:**
-   - Go to [vercel.com](https://vercel.com/dashboard)
-   - Click "Add New Project"
-   - Import your Git repo
-   - Set **Root Directory** to `backend`
-   - Add environment variables (see `backend/.env.example`)
-   - Deploy
-
-3. **Deploy Frontend:**
-   - In Vercel, click "Add New Project" again
-   - Import same repo
-   - Set **Root Directory** to `.` (root)
-   - Add `NEXT_PUBLIC_API_URL` = your backend URL
-   - Deploy
-
-### Detailed Instructions
-
-See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for complete deployment guide.
-
-See [DEPLOY_CHECKLIST.md](./DEPLOY_CHECKLIST.md) for step-by-step checklist.
+Useful scripts: `npm run typecheck`, `npm run lint`, `npm run test:ci`, `npm run build`.
