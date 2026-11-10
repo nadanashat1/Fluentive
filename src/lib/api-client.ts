@@ -1,4 +1,4 @@
-// Pure HTTP client — auth refresh delegated to AuthKernel on 401
+// Pure HTTP client â auth refresh delegated to AuthKernel on 401
 
 import { createCorrelationId } from "@/lib/observability/correlation";
 
@@ -74,6 +74,7 @@ async function tryRefreshSession(): Promise<boolean> {
     const res = await fetch(buildApiUrl("auth/refresh"), {
       method: "POST",
       credentials: "include",
+      cache: "no-store",
     });
     if (!res.ok) return false;
     try {
@@ -107,6 +108,7 @@ async function fetchWithAuth(
   const response = await fetch(url, {
     ...options,
     credentials: "include",
+    cache: "no-store",
     headers,
   });
 
