@@ -97,7 +97,7 @@
     "vitest": "^2.1.8"
   },
   "engines": {
-    "node": "20.x"
+    "node": "26.x"
   },
   "packageManager": "npm@10.9.2",
   "description": "Fluentive CRM - Next.js Fullstack Application",
