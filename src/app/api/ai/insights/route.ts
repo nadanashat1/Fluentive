@@ -441,15 +441,12 @@ async function generateBehavioralAnalysisInsights(user: any, startDate: Date, en
 }
 
 async function generateComprehensiveInsights(user: any, startDate: Date, endDate: Date): Promise<any> {
-  const [leadScoring, churnPrediction, salesForecasting, behavioralAnalysis] = await withTimeout(
-    Promise.all([
-      generateLeadScoringInsights(user, startDate, endDate),
-      generateChurnPredictionInsights(user, startDate, endDate),
-      generateSalesForecastingInsights(user, startDate, endDate),
-      generateBehavioralAnalysisInsights(user, startDate, endDate)
-    ]),
-    30000
-  );
+  // Run generators sequentially: parallel execution needs ~15-20 concurrent DB
+  // connections and exhausts the Supabase session pooler (pool_size 15).
+  const leadScoring = await generateLeadScoringInsights(user, startDate, endDate);
+  const churnPrediction = await generateChurnPredictionInsights(user, startDate, endDate);
+  const salesForecasting = await generateSalesForecastingInsights(user, startDate, endDate);
+  const behavioralAnalysis = await generateBehavioralAnalysisInsights(user, startDate, endDate);
   
   return {
     title: 'Comprehensive AI Insights',
