@@ -147,6 +147,7 @@ model User {
   role              UserRole  @default(employee)
   lockUntil         DateTime?
   loginAttemptCount Int       @default(0)
+  lastLoginAt       DateTime?
   language          String?   @default("en")
   locale            String?
   twoFactorEnabled  Boolean   @default(false)
