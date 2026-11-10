@@ -15,6 +15,9 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
   log: ['error'],
   adapter: new PrismaPg({
     connectionString: process.env.DATABASE_URL || '',
+    // Supabase session pooler allows 15 clients total; cap each warm
+    // serverless instance so a few concurrent instances cannot exhaust it.
+    max: 4,
   }),
 });
 
