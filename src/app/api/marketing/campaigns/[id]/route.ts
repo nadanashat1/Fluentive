@@ -171,3 +171,40 @@ export async function PATCH(
     return NextResponse.json({ success: false, error: 'Failed to update campaign' }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { user, error } = await requireAuth(request);
+    if (error || !user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { id } = await context.params;
+
+    // Hard-coded demo campaigns are not deletable
+    if (id.startsWith("camp-")) {
+      return NextResponse.json({ success: false, error: 'Demo campaigns cannot be deleted' }, { status: 400 });
+    }
+
+    // Org-scoped lookup: a campaign from another organization cannot be deleted
+    const campaign = await prisma.campaign.findFirst({
+      where: { id, organizationId: user.organizationId || '', isDeleted: false }
+    });
+    if (!campaign) {
+      return NextResponse.json({ success: false, error: 'Campaign not found' }, { status: 404 });
+    }
+
+    await prisma.campaign.update({
+      where: { id: campaign.id },
+      data: { isDeleted: true, deletedAt: new Date() }
+    });
+
+    return NextResponse.json({ success: true, message: 'Campaign deleted successfully' });
+  } catch (error) {
+    console.error('[Campaign Details API] DELETE failed:', error);
+    return NextResponse.json({ success: false, error: 'Failed to delete campaign' }, { status: 500 });
+  }
+}
