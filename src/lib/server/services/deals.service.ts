@@ -76,7 +76,7 @@ export const getDeals = async (organizationId: string, filters: any = {}) => {
     ];
   }
 
-  const [deals, total] = await Promise.all([
+  const [deals, total, valueAgg] = await Promise.all([
     prisma.deal.findMany({
       where,
       orderBy: { updatedAt: 'desc' },
@@ -87,7 +87,9 @@ export const getDeals = async (organizationId: string, filters: any = {}) => {
       skip,
       take: Number(limit)
     }),
-    prisma.deal.count({ where })
+    prisma.deal.count({ where }),
+    // Sum across ALL matching deals, not just the current page slice
+    prisma.deal.aggregate({ where, _sum: { value: true } })
   ]);
 
   let dealList = deals;
@@ -105,9 +107,12 @@ export const getDeals = async (organizationId: string, filters: any = {}) => {
     totalCount = dealList.length;
   }
 
-  // Aggregate stats for the pipeline
+  // Aggregate stats for the pipeline: DB aggregate over every match while real
+  // results are in play; the demo fallback list is summed directly.
   const stats = {
-    totalValue: dealList.reduce((acc, d) => acc + (d.value || 0), 0),
+    totalValue: dealList === deals
+      ? (valueAgg._sum.value || 0)
+      : dealList.reduce((acc, d) => acc + (d.value || 0), 0),
     count: totalCount
   };
 
