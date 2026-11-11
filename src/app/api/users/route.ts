@@ -8,15 +8,6 @@ import { withTimeout } from '@/lib/server/timeout-guard';
 import { withRateLimit } from '@/lib/server/rate-limiter';
 import { hashPassword } from '@/lib/auth/password-service';
 
-const demoUserList = [
-  { id: "usr-1", name: "Sarah Connor", email: "sarah.c@fluentive.com", role: "admin", isActive: true, createdAt: new Date("2025-01-15").toISOString(), loginAttemptCount: 0, lockUntil: null },
-  { id: "usr-2", name: "Marcus Brody", email: "marcus.b@fluentive.com", role: "manager", isActive: true, createdAt: new Date("2025-02-01").toISOString(), loginAttemptCount: 0, lockUntil: null },
-  { id: "usr-3", name: "Devon Miles", email: "devon.m@fluentive.com", role: "sales", isActive: true, createdAt: new Date("2025-03-10").toISOString(), loginAttemptCount: 0, lockUntil: null },
-  { id: "usr-4", name: "Elena Vance", email: "elena.v@fluentive.com", role: "sales", isActive: true, createdAt: new Date("2025-04-05").toISOString(), loginAttemptCount: 0, lockUntil: null },
-  { id: "usr-5", name: "Alex Rivers", email: "alex.r@fluentive.com", role: "sales", isActive: true, createdAt: new Date("2025-04-20").toISOString(), loginAttemptCount: 0, lockUntil: null },
-  { id: "usr-6", name: "Rachel Green", email: "rachel.g@fluentive.com", role: "manager", isActive: false, createdAt: new Date("2025-05-01").toISOString(), loginAttemptCount: 3, lockUntil: new Date(Date.now() + 1000 * 60 * 30).toISOString() }
-];
-
 export const POST = withRateLimit(
   withMemoryCheck(async (request: Request) => {
     try {
@@ -55,7 +46,8 @@ export const POST = withRateLimit(
           email: email.trim().toLowerCase(),
           password: hashedPassword,
           role: role ? role.toLowerCase() : "user",
-          organizationId: organizationId || authUser.organizationId || undefined,
+          // Tenant isolation: new users always join the caller's organization.
+          organizationId: authUser.organizationId || undefined,
         },
       });
 
@@ -96,7 +88,8 @@ export const GET = withRateLimit(
     const skip = (page - 1) * limit;
     const search = searchParams.get('search');
 
-    const where: any = {};
+    // Tenant isolation: only users in the caller's organization.
+    const where: any = { organizationId: user.organizationId ?? '' };
     if (search) {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
@@ -123,15 +116,6 @@ export const GET = withRateLimit(
       }),
       (prisma as any).user.count({ where })
     ]), 15000);
-
-    if (users.length === 0) {
-      users = demoUserList.filter(u => {
-        if (!search) return true;
-        const s = search.toLowerCase();
-        return u.name.toLowerCase().includes(s) || u.email.toLowerCase().includes(s);
-      });
-      total = users.length;
-    }
 
     const responseData = {
       success: true,
