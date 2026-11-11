@@ -1,27 +1,30 @@
 # Fluentive CRM
 
-A full-stack CRM for language centers, built with Next.js and TypeScript. It manages the core operations of a language school - leads, students, users, sessions, and analytics - behind a secure dashboard.
+## About the project
 
-## Features
+Fluentive is a full-stack CRM for language centers. It brings lead follow-up, sales tracking, course records, and team management into one dashboard, helping staff organize daily work and track prospective students from their first enquiry through the sales process.
 
-- Authentication with JWT, registration, password reset, and TOTP-based two-factor authentication (QR code setup)
-- Dashboard with analytics, session tracking, user management, and summary views, visualized with Chart.js and Recharts
-- Leads module for tracking prospective students
-- Drag-and-drop interactions (dnd-kit) and animated UI (Framer Motion)
-- AI-assisted features through the OpenAI API
-- PostgreSQL database access through Prisma (hosted on Supabase)
-- Rate limiting and caching with Redis
-- Error monitoring with Sentry, analytics with Vercel Analytics
-- Jest test setup, API endpoint test suite, and CI scripts for lint, typecheck, audit, and performance gates
+The project combines a responsive React interface with backend API routes and a PostgreSQL database. It includes searchable tables, forms, charts, and a sales pipeline.
 
-## Tech stack
+## Core features
 
-- Next.js (App Router), React, TypeScript
-- Prisma + PostgreSQL (Supabase)
-- JWT + OTPAuth for authentication
-- Tailwind CSS, Framer Motion, Recharts, react-chartjs-2
-- Redis (ioredis), Sentry, OpenAI
-- Deployed with Vercel
+- Lead management: create and edit leads, search and filter records, update statuses, and use bulk actions and export.
+- Sales pipeline: organize deals by stage.
+- Dashboard and activity tracking: view summary metrics and charts, review activity, and track work time.
+- Course and instructor records: browse and manage courses and instructors.
+- Team management: manage user accounts and roles.
+- Account access: registration with email verification, sign-in, and email-based password reset.
+
+## Main technologies
+
+Next.js, React, TypeScript, Tailwind CSS, Prisma, and PostgreSQL hosted on Supabase. The demo is deployed on Vercel.
+
+## Live demo
+https://fluentive-nada.vercel.app
+
+A portfolio demonstration of Fluentive, using a separate demo database with synthetic sample records. Registration is available for exploring the app. Please use test data only and do not enter real customer, employee, or student information.
+
+New accounts require email verification. Password reset is available by email. Demo emails may arrive in Spam; check both your inbox and spam folder.
 
 ## Getting started
 
