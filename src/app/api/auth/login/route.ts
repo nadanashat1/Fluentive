@@ -33,6 +33,7 @@ export const POST = withRateLimit(async (request: Request) => {
         password: true,
         isActive: true,
         isDeleted: true,
+        emailVerified: true,
         organizationId: true,
         createdAt: true,
         updatedAt: true
@@ -57,7 +58,7 @@ export const POST = withRateLimit(async (request: Request) => {
       );
     }
 
-    console.log('[Login] SUCCESS for:', email);
+    if (!dbUser.emailVerified) return NextResponse.json({ success: false, error: 'Verify your email before logging in. Register again to resend the link.' }, { status: 403 });
 
     // 3. Generate tokens
     const { accessToken, refreshToken } = await generateAuthTokens(
