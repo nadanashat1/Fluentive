@@ -65,7 +65,12 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
       }, { status: 401 });
     }
     const { id } = await params;
-    
+
+    // Safety guard: admins cannot delete their own account (prevents orphaned org data).
+    if (id === currentUser.id) {
+      return NextResponse.json({ success: false, message: 'You cannot delete your own account' }, { status: 400 });
+    }
+
     // Only admins can delete users
     if (currentUser.role !== 'admin' && currentUser.role !== 'super_admin') {
       return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
