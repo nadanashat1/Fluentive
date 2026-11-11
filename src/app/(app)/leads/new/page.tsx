@@ -142,7 +142,7 @@ export default function AddLeadPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-[11px] text-[#9a9eaa]">Dashboard &gt; Leads &gt; Add Lead</p>
-          <h1 className="text-[38px] font-semibold leading-none text-[#252b36]">Add New Lead</h1>
+          <h1 className="text-[38px] font-semibold leading-none text-[#252b36] dark:text-white">Add New Lead</h1>
           <p className="mt-1 text-[12px] text-[#8e93a0]">
             Add a new potential customer and assign it to a sales agent for immediate follow-up and engagement.
           </p>
