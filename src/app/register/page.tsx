@@ -92,12 +92,6 @@ export default function RegisterPage() {
 
       setSuccess(true);
 
-      // Wait for cookies to be properly set before navigation
-      setTimeout(async () => {
-        await new Promise(res => setTimeout(res, 300));
-        router.push("/dashboard");
-      }, 1200);
-
     } catch (e) {
 
       if (e instanceof ApiError) {
@@ -243,9 +237,9 @@ export default function RegisterPage() {
 
                       <div className="text-green-400 text-6xl mb-4 animate-bounce">â</div>
 
-                      <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>You're all set! ð</p>
+                      <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Check your inbox</p>
 
-                      <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Taking you to your dashboard...</p>
+                      <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Check your email for a verification link. Register again to resend it.</p>
 
                     </div>
 
@@ -490,4 +484,3 @@ export default function RegisterPage() {
   );
 
 }
-
