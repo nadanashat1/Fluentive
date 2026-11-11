@@ -3,6 +3,9 @@ import { requireAuth } from '@/lib/server/auth';
 import { prisma } from '@/lib/prisma';
 
 export const runtime = 'nodejs';
+// Synthetic showcase data is served only to the built-in demo organization.
+const DEMO_ORGANIZATION_ID = '1bb33316-62b4-46eb-8582-3e812aacff00';
+
 
 const demoTeamMembers = [
   {
@@ -92,7 +95,7 @@ export async function GET(request: NextRequest) {
       createdAt: m.createdAt.toISOString(),
     }));
 
-    if (teamList.length <= 1) {
+    if (teamList.length <= 1 && user.organizationId === DEMO_ORGANIZATION_ID) {
       const demoFiltered = demoTeamMembers.filter(m => {
         if (!search) return true;
         const s = search.toLowerCase();
