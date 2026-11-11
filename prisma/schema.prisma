@@ -1383,3 +1383,25 @@ enum ExpenseStatus {
   REJECTED
   PAID
 }
+
+// Per-user notification preferences (durable settings storage)
+model NotificationPreference {
+  id                     String   @id @default(uuid())
+  userId                 String   @unique
+  organizationId         String
+  emailEnabled           Boolean  @default(true)
+  browserEnabled         Boolean  @default(true)
+  leadCreatedEnabled     Boolean  @default(true)
+  leadConvertedEnabled   Boolean  @default(true)
+  leadDeletedEnabled     Boolean  @default(false)
+  userRegisteredEnabled  Boolean  @default(true)
+  aiScoreEnabled         Boolean  @default(true)
+  fileUploadEnabled      Boolean  @default(true)
+  importantNoteEnabled   Boolean  @default(true)
+  churnRiskEnabled       Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@index([organizationId])
+  @@map("notification_preferences")
+}
