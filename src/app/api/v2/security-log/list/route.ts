@@ -14,7 +14,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden - Admin security access required" }, { status: 403 });
   }
 
+  const orgUsers = await prisma.user.findMany({
+    where: { organizationId: user.organizationId ?? "" },
+    select: { id: true }
+  });
+  const orgUserIds = orgUsers.map((u) => u.id);
+
   const rows = await prisma.securityLog.findMany({
+    where: { userId: { in: orgUserIds } },
     orderBy: { createdAt: "desc" },
     take: 100
   });
