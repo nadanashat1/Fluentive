@@ -126,7 +126,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Executive Overview KPIs */}
-        <div className="grid gap-4 px-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+        <div className="grid gap-4 px-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
           <StatCard 
             title="ARR (Annual)" 
             value={formatCurrency(dashboardData.finance.totalRevenue * 12)} 
