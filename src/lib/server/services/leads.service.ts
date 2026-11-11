@@ -189,5 +189,22 @@ export const getLeadById = async (id: string, organizationId: string, userId: st
   });
 
   if (!lead) throw new Error('Lead not found or access denied');
-  return lead;
+
+  // Attach the same deterministic AI score shown on the AI Analytics page so the
+  // lead detail view can present it (scores are computed, not persisted).
+  const [engagement, recentActivityCount] = await Promise.all([
+    prisma.activity.count({ where: { leadId: lead.id } }),
+    prisma.activity.count({
+      where: { leadId: lead.id, createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } }
+    })
+  ]);
+  const activeDeals = (lead.deals || []).filter((d: any) => d.stage !== 'WON' && d.stage !== 'LOST');
+  const estimatedValue = activeDeals.reduce((sum: number, d: any) => sum + (d.value || 0), 0);
+  const valueScore = Math.min(estimatedValue / 10000, 10);
+  let charSum = 0;
+  for (let i = 0; i < lead.id.length; i++) { charSum += lead.id.charCodeAt(i); }
+  const baseScore = 45 + (charSum % 25);
+  const aiScore = Math.round(Math.min(baseScore + (recentActivityCount * 8) + (valueScore * 3) + (engagement * 4), 98));
+
+  return { ...lead, aiScore };
 };
