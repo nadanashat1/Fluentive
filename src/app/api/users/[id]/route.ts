@@ -22,8 +22,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       }, { status: 403 });
     }
     
-    const dbUser = await prisma.user.findUnique({
-      where: { id },
+    // Tenant isolation: only users in the caller's organization are visible.
+    const dbUser = await prisma.user.findFirst({
+      where: { id, organizationId: currentUser.organizationId ?? '' },
       select: {
         id: true,
         name: true,
@@ -69,9 +70,17 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     if (currentUser.role !== 'admin' && currentUser.role !== 'super_admin') {
       return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
     }
-    
+
+    // Tenant isolation: only users in the caller's organization can be deleted.
+    const target = await prisma.user.findFirst({
+      where: { id, organizationId: currentUser.organizationId ?? '' }
+    });
+    if (!target) {
+      return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
+    }
+
     await prisma.user.delete({
-      where: { id }
+      where: { id: target.id }
     });
     
     return NextResponse.json({
@@ -102,9 +111,17 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     if (currentUser.role !== 'admin' && currentUser.role !== 'super_admin') {
       return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
     }
-    
+
+    // Tenant isolation: only users in the caller's organization can be updated.
+    const targetUser = await prisma.user.findFirst({
+      where: { id, organizationId: currentUser.organizationId ?? '' }
+    });
+    if (!targetUser) {
+      return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
+    }
+
     const updatedUser = await prisma.user.update({
-      where: { id },
+      where: { id: targetUser.id },
       data: {
         name: body.name,
         email: body.email,
