@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { MobileSidebar } from "@/components/layout/mobile-sidebar";
-import { FloutingAI } from "@/components/ai/floating-ai";
+import { FloatingAI } from "@/components/ai/floating-ai";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -18,7 +18,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <Topbar onMenuToggle={() => setSidebarOpen(true)} />
         <main className="flex-1 overflow-y-auto p-4 md:p-6 relative">
           {children}
-          <FloutingAI />
+          <FloatingAI />
         </main>
       </div>
     </div>
