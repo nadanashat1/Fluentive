@@ -19,7 +19,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
       where: { id: courseId },
     });
 
-    if (!course || course.isDeleted) {
+    if (!course || course.isDeleted || course.organizationId !== (user.organizationId ?? '')) {
       return NextResponse.json({ success: false, error: 'Course not found' }, { status: 404 });
     }
 

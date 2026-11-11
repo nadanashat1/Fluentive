@@ -30,7 +30,8 @@ export const GET = withApiHandler(
 
     // Build where clause for date filtering
     const whereClause: any = {
-      isDeleted: false
+      isDeleted: false,
+      organizationId: user.organizationId ?? ''
     };
     
     // Apply role-based filtering

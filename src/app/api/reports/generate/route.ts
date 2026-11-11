@@ -227,6 +227,7 @@ async function generateSalesPipelineReport(
       where: {
         userId: user.role === Roles.ADMIN ? {} : user.id,
         createdAt: { gte: startDate, lte: endDate },
+        organizationId: user.organizationId ?? '',
         isDeleted: false,
         ...filters
       } as Prisma.LeadWhereInput,
@@ -326,6 +327,7 @@ async function generateLeadConversionReport(
       where: {
         userId: user.role === Roles.ADMIN ? {} : user.id,
         createdAt: { gte: startDate, lte: endDate },
+        organizationId: user.organizationId ?? '',
         isDeleted: false,
         ...filters
       } as Prisma.LeadWhereInput,
@@ -395,7 +397,10 @@ async function generateUserPerformanceReport(
   void filters;
   const users: UserPerformanceRow[] = await withTimeout(
     prisma.user.findMany({
-      where: user.role === Roles.ADMIN ? {} : { id: user.id },
+      where: {
+        ...(user.role === Roles.ADMIN ? {} : { id: user.id }),
+        organizationId: user.organizationId ?? ''
+      },
       include: {
         leads: {
           where: {
@@ -463,6 +468,7 @@ async function generateRevenueAnalyticsReport(
       where: {
         userId: user.role === Roles.ADMIN ? {} : user.id,
         createdAt: { gte: startDate, lte: endDate },
+        organizationId: user.organizationId ?? '',
         isDeleted: false,
         ...filters
       } as Prisma.DealWhereInput,
@@ -542,6 +548,7 @@ async function generateActivitySummaryReport(
       where: {
         userId: user.role === Roles.ADMIN ? {} : user.id,
         createdAt: { gte: startDate, lte: endDate },
+        organizationId: user.organizationId ?? '',
         ...filters
       } as Prisma.ActivityWhereInput,
       include: {

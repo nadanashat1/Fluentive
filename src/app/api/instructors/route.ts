@@ -3,6 +3,9 @@ import { requireAuth } from '@/lib/server/auth';
 import { prisma } from '@/lib/prisma';
 
 export const runtime = 'nodejs';
+// Synthetic showcase data is served only to the built-in demo organization.
+const DEMO_ORGANIZATION_ID = '1bb33316-62b4-46eb-8582-3e812aacff00';
+
 
 const demoInstructors = [
   {
@@ -108,7 +111,7 @@ export async function GET(request: NextRequest) {
 
     let totalCount = total;
 
-    if (instructorList.length === 0) {
+    if (instructorList.length === 0 && user.organizationId === DEMO_ORGANIZATION_ID) {
       instructorList = demoInstructors.filter(inst => {
         if (status && inst.status !== status) return false;
         if (search) {

@@ -48,13 +48,33 @@ export async function GET(request: NextRequest) {
         const endDate = searchParams.get('endDate');
         const severity = searchParams.get('severity');
         
-        const where: Prisma.SecurityLogWhereInput = {};
-        
+        const orgUsers = await prisma.user.findMany({
+          where: { organizationId: user.organizationId ?? '' },
+          select: { id: true }
+        });
+        const orgUserIds = orgUsers.map((u) => u.id);
+
+        const where: Prisma.SecurityLogWhereInput = {
+          userId: { in: orgUserIds }
+        };
+
         if (action) {
           where.action = { contains: action, mode: 'insensitive' };
         }
         
         if (userId) {
+          if (!orgUserIds.includes(userId)) {
+            return createCompressedResponse({
+              success: true,
+              data: {
+                auditLogs: [],
+                pagination: { page, limit, total: 0, pages: 0, hasNext: false, hasPrev: false },
+                statistics: [],
+                recentSecurityEvents: [],
+                summary: { totalEvents: 0, criticalEvents: 0 }
+              }
+            }, 200);
+          }
           where.userId = userId;
         }
         
@@ -106,6 +126,7 @@ export async function GET(request: NextRequest) {
         const stats = await withTimeout(
           prisma.securityLog.groupBy({
             by: ['action'],
+            where: { userId: { in: orgUserIds } },
             _count: { id: true },
             orderBy: { _count: { id: 'desc' } },
             take: 10
@@ -116,6 +137,7 @@ export async function GET(request: NextRequest) {
         const recentRows = await withTimeout(
           prisma.securityLog.findMany({
             where: {
+              userId: { in: orgUserIds },
               action: {
                 in: ['LOGIN_FAILED', '2FA_ENABLED', '2FA_DISABLED', 'PASSWORD_CHANGED', 'ACCOUNT_LOCKED']
               }
@@ -290,8 +312,14 @@ export async function DELETE(request: NextRequest) {
           }, 400);
         }
         
-        // Build where clause for deletion
-        const where: Prisma.SecurityLogWhereInput = {};
+        // Build where clause for deletion (scoped to the caller's organization)
+        const orgUsersForDelete = await prisma.user.findMany({
+          where: { organizationId: user.organizationId ?? '' },
+          select: { id: true }
+        });
+        const where: Prisma.SecurityLogWhereInput = {
+          userId: { in: orgUsersForDelete.map((u) => u.id) }
+        };
         
         if (olderThan) {
           where.createdAt = {

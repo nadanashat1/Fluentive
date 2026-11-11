@@ -3,6 +3,9 @@ import { requireAuth } from '@/lib/server/auth';
 import { prisma } from '@/lib/prisma';
 
 export const runtime = 'nodejs';
+// Synthetic showcase data is served only to the built-in demo organization.
+const DEMO_ORGANIZATION_ID = '1bb33316-62b4-46eb-8582-3e812aacff00';
+
 
 const demoInstructorsMap: Record<string, any> = {
   "inst-1": {
@@ -84,7 +87,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
 
     const { id } = await context.params;
 
-    if (id.startsWith("inst-") && demoInstructorsMap[id]) {
+    if (id.startsWith("inst-") && user.organizationId === DEMO_ORGANIZATION_ID && demoInstructorsMap[id]) {
       return NextResponse.json({ success: true, data: demoInstructorsMap[id] });
     }
 
@@ -129,7 +132,7 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
     const body = await request.json();
     const { name, email, phone, bio, expertise, certifications, linkedinUrl, twitterUrl, websiteUrl, isActive } = body;
 
-    if (id.startsWith("inst-") && demoInstructorsMap[id]) {
+    if (id.startsWith("inst-") && user.organizationId === DEMO_ORGANIZATION_ID && demoInstructorsMap[id]) {
       if (name) demoInstructorsMap[id].name = name;
       if (email) demoInstructorsMap[id].email = email;
       if (phone !== undefined) demoInstructorsMap[id].phone = phone;
@@ -186,7 +189,7 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
 
     const { id } = await context.params;
 
-    if (id.startsWith("inst-") && demoInstructorsMap[id]) {
+    if (id.startsWith("inst-") && user.organizationId === DEMO_ORGANIZATION_ID && demoInstructorsMap[id]) {
       delete demoInstructorsMap[id];
       return NextResponse.json({ success: true });
     }

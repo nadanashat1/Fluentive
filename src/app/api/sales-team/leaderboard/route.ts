@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma';
 
 export const runtime = 'nodejs';
 
+const DEMO_ORGANIZATION_ID = '1bb33316-62b4-46eb-8582-3e812aacff00';
+
 const demoLeaderboard = [
   {
     id: "usr-2",
@@ -68,10 +70,12 @@ export async function GET(request: NextRequest) {
     else if (range === '1y') startDate.setFullYear(startDate.getFullYear() - 1);
     else startDate.setDate(startDate.getDate() - 30); // Default
 
-    // Get all sales members
+    // Get sales members in the caller's organization only
+    const orgId = user.organizationId ?? '';
     const teamMembers = await prisma.user.findMany({
-      where: { 
+      where: {
         isDeleted: false,
+        organizationId: orgId,
         role: { in: ['sales', 'manager', 'admin'] as any[] },
         isActive: true
       },
@@ -87,6 +91,7 @@ export async function GET(request: NextRequest) {
     const wonDeals = await prisma.deal.findMany({
       where: {
         isDeleted: false,
+        organizationId: orgId,
         stage: 'WON',
         updatedAt: { gte: startDate }
       },
@@ -100,6 +105,7 @@ export async function GET(request: NextRequest) {
     const newLeads = await prisma.lead.findMany({
       where: {
         isDeleted: false,
+        organizationId: orgId,
         createdAt: { gte: startDate }
       },
       select: {
@@ -111,6 +117,7 @@ export async function GET(request: NextRequest) {
     const activities = await prisma.activity.findMany({
       where: {
         isDeleted: false,
+        organizationId: orgId,
         createdAt: { gte: startDate }
       },
       select: {
@@ -142,7 +149,7 @@ export async function GET(request: NextRequest) {
 
     const totalRevenue = leaderboard.reduce((sum: number, u: any) => sum + u.revenue, 0);
 
-    if (leaderboard.length <= 1 && totalRevenue === 0) {
+    if (leaderboard.length <= 1 && totalRevenue === 0 && orgId === DEMO_ORGANIZATION_ID) {
       leaderboard = [...leaderboard, ...demoLeaderboard];
       leaderboard.sort((a: any, b: any) => b.score - a.score);
     }
