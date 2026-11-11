@@ -46,41 +46,42 @@ export async function GET(request: NextRequest) {
       activeJobs,
       totalApplications,
     ] = await Promise.all([
+      // Tenant isolation: every aggregate below is scoped to the caller's organization.
       // Finance aggregation
-      prisma.invoice.aggregate({ 
-        where: { status: 'PAID' }, 
-        _sum: { total: true } 
+      prisma.invoice.aggregate({
+        where: { status: 'PAID', organizationId: user.organizationId ?? '' },
+        _sum: { total: true }
       }),
-      prisma.invoice.aggregate({ 
-        where: { status: 'PAID', paidDate: { gte: twoMonthsAgo, lt: monthAgo } }, 
-        _sum: { total: true } 
+      prisma.invoice.aggregate({
+        where: { status: 'PAID', paidDate: { gte: twoMonthsAgo, lt: monthAgo }, organizationId: user.organizationId ?? '' },
+        _sum: { total: true }
       }),
-      prisma.expense.aggregate({ 
-        where: { status: 'PAID' }, 
-        _sum: { amount: true } 
+      prisma.expense.aggregate({
+        where: { status: 'PAID', organizationId: user.organizationId ?? '' },
+        _sum: { amount: true }
       }),
-      prisma.invoice.count({ where: { status: { in: ['SENT', 'OVERDUE'] } } }),
+      prisma.invoice.count({ where: { status: { in: ['SENT', 'OVERDUE'] }, organizationId: user.organizationId ?? '' } }),
 
       // Sales aggregation
-      prisma.deal.count({ where: { stage: { notIn: ['WON', 'LOST'] } } }),
-      prisma.deal.count({ where: { stage: 'WON', updatedAt: { gte: monthAgo } } }),
-      prisma.deal.aggregate({ 
-        where: { stage: { notIn: ['WON', 'LOST'] } }, 
-        _sum: { value: true } 
+      prisma.deal.count({ where: { stage: { notIn: ['WON', 'LOST'] }, organizationId: user.organizationId ?? '', isDeleted: false } }),
+      prisma.deal.count({ where: { stage: 'WON', updatedAt: { gte: monthAgo }, organizationId: user.organizationId ?? '', isDeleted: false } }),
+      prisma.deal.aggregate({
+        where: { stage: { notIn: ['WON', 'LOST'] }, organizationId: user.organizationId ?? '', isDeleted: false },
+        _sum: { value: true }
       }),
 
       // HR aggregation
-      prisma.employee.count({ where: { status: 'ACTIVE' } }),
-      prisma.employee.count({ where: { createdAt: { gte: monthAgo } } }),
-      prisma.attendance.count({ where: { date: { gte: monthAgo }, status: 'PRESENT' } }),
+      prisma.employee.count({ where: { status: 'ACTIVE', organizationId: user.organizationId ?? '' } }),
+      prisma.employee.count({ where: { createdAt: { gte: monthAgo }, organizationId: user.organizationId ?? '' } }),
+      prisma.attendance.count({ where: { date: { gte: monthAgo }, status: 'PRESENT', employee: { organizationId: user.organizationId ?? '' } } }),
 
       // Marketing aggregation
-      prisma.campaign.aggregate({ _sum: { spent: true } }),
-      prisma.lead.count({ where: { isDeleted: false } }),
+      prisma.campaign.aggregate({ where: { organizationId: user.organizationId ?? '', isDeleted: false }, _sum: { spent: true } }),
+      prisma.lead.count({ where: { isDeleted: false, organizationId: user.organizationId ?? '' } }),
 
       // ATS aggregation
-      prisma.jobPosition.count({ where: { status: 'OPEN' } }),
-      prisma.application.count({ where: { appliedAt: { gte: monthAgo } } }),
+      prisma.jobPosition.count({ where: { status: 'OPEN', organizationId: user.organizationId ?? '' } }),
+      prisma.application.count({ where: { appliedAt: { gte: monthAgo }, job: { organizationId: user.organizationId ?? '' } } }),
     ]);
 
     const revenue = totalRevenue._sum.total || 0;
