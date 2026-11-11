@@ -377,7 +377,7 @@ export default function LeadsPage() {
 
         <div>
 
-          <h1 className="text-2xl font-bold text-[#2f3440] dark:text-gray-100">Leads Management 👥</h1>
+          <h1 className="text-2xl font-bold text-[#2f3440] dark:text-gray-100">Leads Management ð¥</h1>
 
           <p className="text-[13px] text-[#8b8f9b] dark:text-gray-400">{total} total leads found</p>
 
@@ -385,7 +385,7 @@ export default function LeadsPage() {
 
             <p className="text-[12px] text-[#6b7280] dark:text-gray-400">
 
-              <span className="font-semibold text-[#840A36]">📋 Quick Guide:</span> Add new leads, track their status, and manage your sales pipeline. Use filters to find specific leads and click on any lead to view details.
+              <span className="font-semibold text-[#840A36]">ð Quick Guide:</span> Add new leads, track their status, and manage your sales pipeline. Use filters to find specific leads and click on any lead to view details.
 
             </p>
 
@@ -845,15 +845,15 @@ export default function LeadsPage() {
 
               <option value="">Update Status...</option>
 
-              <option value="new">New</option>
+              <option value="NEW">New</option>
 
-              <option value="contacted">Contacted</option>
+              <option value="CONTACTED">Contacted</option>
 
-              <option value="interested">Interested</option>
+              <option value="QUALIFIED">Qualified</option>
 
-              <option value="not_interested">Not Interested</option>
+              <option value="CONVERTED">Converted</option>
 
-              <option value="converted">Converted</option>
+              <option value="LOST">Lost</option>
 
             </select>
 
