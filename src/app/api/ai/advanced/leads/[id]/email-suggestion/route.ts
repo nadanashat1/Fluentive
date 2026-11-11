@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
 
     if (!leadId.startsWith("demo-")) {
       const lead = await prisma.lead.findUnique({ where: { id: leadId } });
-      if (lead) {
+      if (lead && lead.organizationId === (user.organizationId ?? '')) {
         leadName = lead.name || leadName;
         company = lead.company || company;
       }
