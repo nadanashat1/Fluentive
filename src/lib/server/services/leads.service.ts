@@ -121,8 +121,7 @@ export const updateLead = async (
 
   // Build the note content here (previously referenced noteContent, which only
   // exists in createLead - that made every lead update return 500 after saving).
-  const noteContent = [notes].filter(Boolean).join('
-');
+  const noteContent = [notes].filter(Boolean).join('\n');
 
   const lead = await prisma.lead.update({
     where: { id },
