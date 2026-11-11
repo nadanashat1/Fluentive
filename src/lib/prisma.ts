@@ -17,7 +17,10 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
     connectionString: process.env.DATABASE_URL || '',
     // Supabase session pooler allows 15 clients total; cap each warm
     // serverless instance so a few concurrent instances cannot exhaust it.
-    max: 4,
+    max: 2,
+    // Release idle connections quickly so overlapping deployments during
+    // redeploys free their pooler slots within seconds, not minutes.
+    idleTimeoutMillis: 5000,
   }),
 });
 
