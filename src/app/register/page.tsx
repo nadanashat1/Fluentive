@@ -233,13 +233,13 @@ export default function RegisterPage() {
 
                   {success && (
 
-                    <div className={`absolute inset-0 flex flex-col items-center justify-center backdrop-blur-xl rounded-2xl animate-fadeIn z-20 ${theme === "dark" ? "bg-[#0b0614]/85" : "bg-white/90"}`}>
+                    <div className={`flex flex-col items-center justify-center rounded-2xl py-8 text-center ${theme === "dark" ? "bg-[#0b0614]/85" : "bg-white/90"}`}>
 
                       <div className="text-green-400 text-6xl mb-4 animate-bounce">✓</div>
 
-                      <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Check your inbox</p>
+                      <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Check your email</p>
 
-                      <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Check your email for a verification link. Register again to resend it.</p>
+                      <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Check your inbox and spam folder for a verification link. Register again to resend it.</p>
 
                     </div>
 
@@ -247,7 +247,7 @@ export default function RegisterPage() {
 
 
 
-                  <form className="space-y-5" onSubmit={handleSubmit}>
+                  {!success && (<form className="space-y-5" onSubmit={handleSubmit}>
 
                     {error ? (
 
@@ -453,7 +453,7 @@ export default function RegisterPage() {
 
                   </p>
 
-                </form>
+                </form>)}
 
                 </div>
 
