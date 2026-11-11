@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext-production';
+import { authKernel, AuthState } from '@/lib/auth/auth-kernel';
 import { Loader2 } from 'lucide-react';
 
 interface ProtectedRouteProps {
@@ -20,15 +21,28 @@ export function ProtectedRoute({
   const router = useRouter();
 
   useEffect(() => {
-    // Only redirect when auth is NOT loading AND user is NOT authenticated
+    // Only act when auth is NOT loading AND not mid-hydration
     if (!loading && state.status !== 'hydrating' && state.status !== 'idle') {
       if (!isAuthenticated) {
-        // Store the attempted URL for redirect after login
-        const currentPath = window.location.pathname;
-        if (currentPath !== redirectTo) {
-          console.log('[ProtectedRoute] Redirecting to login, current path:', currentPath);
-          router.push(`${redirectTo}?next=${encodeURIComponent(currentPath)}`);
-        }
+        // Attempt a session bootstrap BEFORE redirecting. On a cold load the
+        // kernel starts ANONYMOUS and child effects run before the provider's
+        // bootstrap effect, which bounced users with a valid session straight
+        // to /login. bootstrapSession() is idempotent (internal guards) and
+        // flips status to HYDRATING synchronously when it actually runs; when
+        // it resolves we re-check the kernel and only then redirect.
+        let cancelled = false;
+        Promise.resolve(authKernel.bootstrapSession()).then(() => {
+          if (cancelled) return;
+          const s = authKernel.getState();
+          if (s.status !== AuthState.AUTHENTICATED && s.status !== AuthState.REFRESHING) {
+            const currentPath = window.location.pathname;
+            if (currentPath !== redirectTo) {
+              console.log('[ProtectedRoute] Redirecting to login, current path:', currentPath);
+              router.push(`${redirectTo}?next=${encodeURIComponent(currentPath)}`);
+            }
+          }
+        });
+        return () => { cancelled = true; };
       } else {
         console.log('[ProtectedRoute] User authenticated, allowing access');
       }
