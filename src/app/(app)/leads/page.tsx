@@ -377,7 +377,7 @@ export default function LeadsPage() {
 
         <div>
 
-          <h1 className="text-2xl font-bold text-[#2f3440] dark:text-gray-100">Leads Management 👥</h1>
+          <h1 className="text-2xl font-bold text-[#2f3440] dark:text-gray-100">Leads Management ð¥</h1>
 
           <p className="text-[13px] text-[#8b8f9b] dark:text-gray-400">{total} total leads found</p>
 
@@ -385,7 +385,7 @@ export default function LeadsPage() {
 
             <p className="text-[12px] text-[#6b7280] dark:text-gray-400">
 
-              <span className="font-semibold text-[#840A36]">📋 Quick Guide:</span> Add new leads, track their status, and manage your sales pipeline. Use filters to find specific leads and click on any lead to view details.
+              <span className="font-semibold text-[#840A36]">ð Quick Guide:</span> Add new leads, track their status, and manage your sales pipeline. Use filters to find specific leads and click on any lead to view details.
 
             </p>
 
@@ -443,7 +443,7 @@ export default function LeadsPage() {
 
           <button
 
-            onClick={() => {
+            onClick={async () => {
 
               const params = new URLSearchParams();
 
@@ -453,7 +453,43 @@ export default function LeadsPage() {
 
               if (source) params.set("source", source);
 
-              window.open(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/export?${params.toString()}`, '_blank');
+              try {
+
+                const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+                const res = await fetch(`/api/leads/export?${params.toString()}`, {
+
+                  headers: token ? { Authorization: `Bearer ${token}` } : {}
+
+                });
+
+                if (!res.ok) throw new Error(`Export failed (${res.status})`);
+
+                const blob = await res.blob();
+
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+
+                a.href = url;
+
+                a.download = `leads-export-${new Date().toISOString().slice(0, 10)}.csv`;
+
+                document.body.appendChild(a);
+
+                a.click();
+
+                a.remove();
+
+                URL.revokeObjectURL(url);
+
+              } catch (e) {
+
+                console.error("Leads export failed", e);
+
+                alert("Export failed. Please try again.");
+
+              }
 
             }}
 
@@ -809,15 +845,15 @@ export default function LeadsPage() {
 
               <option value="">Update Status...</option>
 
-              <option value="new">New</option>
+              <option value="NEW">New</option>
 
-              <option value="contacted">Contacted</option>
+              <option value="CONTACTED">Contacted</option>
 
-              <option value="interested">Interested</option>
+              <option value="QUALIFIED">Qualified</option>
 
-              <option value="not_interested">Not Interested</option>
+              <option value="CONVERTED">Converted</option>
 
-              <option value="converted">Converted</option>
+              <option value="LOST">Lost</option>
 
             </select>
 

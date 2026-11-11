@@ -49,7 +49,6 @@ runtime-audit.js
 
 # Development scripts and tools
 scripts/
-tsconfig.json
 jest.config.js
 vitest.config.js
 

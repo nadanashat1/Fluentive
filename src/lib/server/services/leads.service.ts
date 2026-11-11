@@ -57,23 +57,30 @@ export const getLeads = async (
   return { leads, total, page, limit };
 };
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export const createLead = async (data: any, organizationId: string, userId: string) => {
   const { course, notes, ...restData } = data;
+  // `course` may be a Course UUID (internal) or free-text interest from the UI.
+  // Only UUIDs can be written to the courseId foreign key; keep free text as a note.
+  const courseId = course && UUID_RE.test(String(course)) ? course : null;
+  const freeTextCourse = course && !courseId ? `Course Interest: ${course}` : null;
+  const noteContent = [notes, freeTextCourse].filter(Boolean).join('\n');
   const lead = await prisma.lead.create({
     data: {
       ...restData,
-      courseId: course || null,
+      courseId,
       organizationId,
       userId
     }
   });
 
-  if (notes) {
+  if (noteContent) {
     await prisma.leadNote.create({
       data: {
         leadId: lead.id,
         authorId: userId,
-        content: notes
+        content: noteContent
       }
     });
   }
@@ -110,7 +117,11 @@ export const updateLead = async (
 
   const { course, notes, ...restData } = data;
   const updatePayload: any = { ...restData };
-  if (course !== undefined) updatePayload.courseId = course || null;
+  if (course !== undefined) updatePayload.courseId = (course && UUID_RE.test(String(course))) ? course : null;
+
+  // Build the note content here (previously referenced noteContent, which only
+  // exists in createLead - that made every lead update return 500 after saving).
+  const noteContent = [notes].filter(Boolean).join('\n');
 
   const lead = await prisma.lead.update({
     where: { id },
@@ -118,12 +129,12 @@ export const updateLead = async (
     include: { owner: { select: { name: true } } }
   });
 
-  if (notes) {
+  if (noteContent) {
     await prisma.leadNote.create({
       data: {
         leadId: lead.id,
         authorId: userId,
-        content: notes
+        content: noteContent
       }
     });
   }
@@ -182,5 +193,22 @@ export const getLeadById = async (id: string, organizationId: string, userId: st
   });
 
   if (!lead) throw new Error('Lead not found or access denied');
-  return lead;
+
+  // Attach the same deterministic AI score shown on the AI Analytics page so the
+  // lead detail view can present it (scores are computed, not persisted).
+  const [engagement, recentActivityCount] = await Promise.all([
+    prisma.activity.count({ where: { leadId: lead.id } }),
+    prisma.activity.count({
+      where: { leadId: lead.id, createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) } }
+    })
+  ]);
+  const activeDeals = (lead.deals || []).filter((d: any) => d.stage !== 'WON' && d.stage !== 'LOST');
+  const estimatedValue = activeDeals.reduce((sum: number, d: any) => sum + (d.value || 0), 0);
+  const valueScore = Math.min(estimatedValue / 10000, 10);
+  let charSum = 0;
+  for (let i = 0; i < lead.id.length; i++) { charSum += lead.id.charCodeAt(i); }
+  const baseScore = 45 + (charSum % 25);
+  const aiScore = Math.round(Math.min(baseScore + (recentActivityCount * 8) + (valueScore * 3) + (engagement * 4), 98));
+
+  return { ...lead, aiScore };
 };

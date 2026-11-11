@@ -344,29 +344,31 @@ async function generateChurnPredictionInsights(user: any, startDate: Date, endDa
 }
 
 async function generateSalesForecastingInsights(user: any, startDate: Date, endDate: Date): Promise<any> {
-  // Lightweight forecasting - use counts only for memory safety
-  const [dealsCount, leadsCount] = await withTimeout(
+  // Lightweight forecasting - fetch only the fields the aggregation needs
+  const [dealsData, leadsData] = await withTimeout(
     Promise.all([
-      (prisma as any).deal.count({
+      (prisma as any).deal.findMany({
         where: {
           userId: user.role === Roles.ADMIN ? {} : user.id,
           createdAt: { gte: new Date(startDate.getTime() - 90 * 24 * 60 * 60 * 1000) },
           isDeleted: false
-        }
+        },
+        select: { createdAt: true, value: true }
       }),
-      (prisma as any).lead.count({
+      (prisma as any).lead.findMany({
         where: {
           userId: user.role === Roles.ADMIN ? {} : user.id,
           createdAt: { gte: new Date(startDate.getTime() - 90 * 24 * 60 * 60 * 1000) },
           isDeleted: false
-        }
+        },
+        select: { createdAt: true }
       })
     ]),
     3000 // Reduced timeout
   );
   
   // Time series forecasting
-  const monthlyData = aggregateMonthlyData(dealsCount, leadsCount);
+  const monthlyData = aggregateMonthlyData(dealsData, leadsData);
   const forecast = generateSalesForecast(monthlyData);
   
   return {
@@ -383,7 +385,7 @@ async function generateSalesForecastingInsights(user: any, startDate: Date, endD
     insights: {
       predictedRevenue: forecast.reduce((sum: number, f: any) => sum + f.predictedRevenue, 0),
       predictedDeals: forecast.reduce((sum: number, f: any) => sum + f.predictedDeals, 0),
-      confidence: forecast.map((f: any) => f.confidence).reduce((sum: number, c: number) => sum + c, 0) / forecast.length,
+      confidence: forecast.length ? forecast.map((f: any) => f.confidence).reduce((sum: number, c: number) => sum + c, 0) / forecast.length : 0,
       seasonality: detectSeasonality(monthlyData),
       growthRate: calculateGrowthRate(monthlyData)
     },
@@ -439,15 +441,12 @@ async function generateBehavioralAnalysisInsights(user: any, startDate: Date, en
 }
 
 async function generateComprehensiveInsights(user: any, startDate: Date, endDate: Date): Promise<any> {
-  const [leadScoring, churnPrediction, salesForecasting, behavioralAnalysis] = await withTimeout(
-    Promise.all([
-      generateLeadScoringInsights(user, startDate, endDate),
-      generateChurnPredictionInsights(user, startDate, endDate),
-      generateSalesForecastingInsights(user, startDate, endDate),
-      generateBehavioralAnalysisInsights(user, startDate, endDate)
-    ]),
-    30000
-  );
+  // Run generators sequentially: parallel execution needs ~15-20 concurrent DB
+  // connections and exhausts the Supabase session pooler (pool_size 15).
+  const leadScoring = await generateLeadScoringInsights(user, startDate, endDate);
+  const churnPrediction = await generateChurnPredictionInsights(user, startDate, endDate);
+  const salesForecasting = await generateSalesForecastingInsights(user, startDate, endDate);
+  const behavioralAnalysis = await generateBehavioralAnalysisInsights(user, startDate, endDate);
   
   return {
     title: 'Comprehensive AI Insights',
@@ -674,8 +673,9 @@ function aggregateMonthlyData(deals: any[], leads: any[]): any[] {
 
 function generateSalesForecast(historicalData: any[]): any[] {
   // Simple forecasting algorithm (moving average with trend)
-  const forecast = [];
+  const forecast: any[] = [];
   const months = 3; // Forecast 3 months ahead
+  if (historicalData.length === 0) return forecast;
   
   for (let i = 1; i <= months; i++) {
     const lastMonth = historicalData[historicalData.length - 1];

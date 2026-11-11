@@ -15,9 +15,15 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
   log: ['error'],
   adapter: new PrismaPg({
     connectionString: process.env.DATABASE_URL || '',
+    // Supabase session pooler allows 15 clients total; cap each warm
+    // serverless instance so a few concurrent instances cannot exhaust it.
+    max: 2,
+    // Release idle connections quickly so overlapping deployments during
+    // redeploys free their pooler slots within seconds, not minutes.
+    idleTimeoutMillis: 5000,
   }),
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
-}
+// Always cache on globalThis: in serverless production each warm instance reuses
+// one client/pool instead of opening a new pool per request (prevents pooler exhaustion).
+globalForPrisma.prisma = prisma;

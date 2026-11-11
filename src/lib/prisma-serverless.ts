@@ -14,6 +14,5 @@ export const prisma =
     log: ['error'],
   });
 
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
-}
+// Always cache on globalThis: serverless warm instances reuse one client/pool.
+globalForPrisma.prisma = prisma;

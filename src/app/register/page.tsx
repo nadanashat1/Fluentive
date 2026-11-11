@@ -197,7 +197,7 @@ export default function RegisterPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.65fr]">
 
-            <div className="relative p-6 sm:p-8 lg:p-10">
+            <div className="relative hidden lg:block p-6 sm:p-8 lg:p-10">
 
               <LeftSideHero className="min-h-[640px] rounded-[28px]" />
 
@@ -211,7 +211,7 @@ export default function RegisterPage() {
 
                 <div className="mb-8">
 
-                  <h2 className={`text-[44px] font-bold ${theme === "dark" ? "text-white" : "text-[#242933]"}`}>Create Account 🚀</h2>
+                  <h2 className={`text-[44px] font-bold ${theme === "dark" ? "text-white" : "text-[#242933]"}`}>Create Account ð</h2>
 
                   <p className={`mt-2 text-[18px] ${theme === "dark" ? "text-gray-300" : "text-[#5f6674]"}`}>Join D-Fluency CRM and start managing your leads efficiently.</p>
 
@@ -219,7 +219,7 @@ export default function RegisterPage() {
 
                     <p className={`text-[13px] ${theme === "dark" ? "text-gray-400" : "text-[#6b7280]"}`}>
 
-                      <span className={`font-semibold ${theme === "dark" ? "text-[#f5c6d7]" : "text-[#840A36]"}`}>✨ Getting Started:</span> Fill in your details below. Your password should be secure (8+ chars with uppercase, lowercase, numbers, and special characters).
+                      <span className={`font-semibold ${theme === "dark" ? "text-[#f5c6d7]" : "text-[#840A36]"}`}>â¨ Getting Started:</span> Fill in your details below. Your password should be secure (8+ chars with uppercase, lowercase, numbers, and special characters).
 
                     </p>
 
@@ -241,9 +241,9 @@ export default function RegisterPage() {
 
                     <div className={`absolute inset-0 flex flex-col items-center justify-center backdrop-blur-xl rounded-2xl animate-fadeIn z-20 ${theme === "dark" ? "bg-[#0b0614]/85" : "bg-white/90"}`}>
 
-                      <div className="text-green-400 text-6xl mb-4 animate-bounce">✅</div>
+                      <div className="text-green-400 text-6xl mb-4 animate-bounce">â</div>
 
-                      <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>You're all set! 🎉</p>
+                      <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>You're all set! ð</p>
 
                       <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Taking you to your dashboard...</p>
 
@@ -339,7 +339,7 @@ export default function RegisterPage() {
 
                         onChange={(e) => setPassword(e.target.value)}
 
-                        placeholder="••••••••"
+                        placeholder="â¢â¢â¢â¢â¢â¢â¢â¢"
 
                         className={`h-[56px] w-full rounded-2xl border pl-12 pr-12 text-[16px] outline-none transition-all ${theme === "dark" ? "border-white/10 bg-white/5 backdrop-blur-sm placeholder:text-gray-500 text-white focus:border-[#840A36] focus:ring-2 focus:ring-[#840A36]/20" : "border-[#e4e6ec] bg-[#f7f8fb] placeholder:text-[#b2b6c2] text-[#313744] focus:border-[#840A36] focus:ring-2 focus:ring-[#840A36]/20"}`}
 
@@ -389,7 +389,7 @@ export default function RegisterPage() {
 
                         onChange={(e) => setConfirmPassword(e.target.value)}
 
-                        placeholder="••••••••"
+                        placeholder="â¢â¢â¢â¢â¢â¢â¢â¢"
 
                         className={`h-[56px] w-full rounded-2xl border pl-12 pr-12 text-[16px] outline-none transition-all ${theme === "dark" ? "border-white/10 bg-white/5 backdrop-blur-sm placeholder:text-gray-500 text-white focus:border-[#840A36] focus:ring-2 focus:ring-[#840A36]/20" : "border-[#e4e6ec] bg-[#f7f8fb] placeholder:text-[#b2b6c2] text-[#313744] focus:border-[#840A36] focus:ring-2 focus:ring-[#840A36]/20"}`}
 

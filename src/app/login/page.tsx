@@ -218,7 +218,7 @@ export default function LoginPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.65fr]">
 
-            <div className="relative p-6 sm:p-8 lg:p-10">
+            <div className="relative hidden lg:block p-6 sm:p-8 lg:p-10">
 
               <LeftSideHero className="min-h-[640px] rounded-[28px]" />
 
@@ -236,9 +236,9 @@ export default function LoginPage() {
 
                   <div className={`absolute inset-0 flex flex-col items-center justify-center backdrop-blur-xl rounded-2xl animate-fadeIn z-20 ${theme === "dark" ? "bg-[#0b0614]/85" : "bg-white/90"}`}>
 
-                    <div className="text-green-400 text-6xl mb-4 animate-bounce">✅</div>
+                    <div className="text-green-400 text-6xl mb-4 animate-bounce">â</div>
 
-                    <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>You're in! 🎉</p>
+                    <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>You're in! ð</p>
 
                     <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Taking you to your dashboard...</p>
 
@@ -250,7 +250,7 @@ export default function LoginPage() {
 
                 <div className="mb-8">
 
-                  <h2 className={`text-[44px] font-bold ${theme === "dark" ? "text-white" : "text-[#242933]"}`}>Welcome Back! 👋</h2>
+                  <h2 className={`text-[44px] font-bold ${theme === "dark" ? "text-white" : "text-[#242933]"}`}>Welcome Back! ð</h2>
 
                   <p className={`mt-2 text-[18px] ${theme === "dark" ? "text-gray-300" : "text-[#5f6674]"}`}>Enter your credentials to access your dashboard and manage your leads.</p>
 
@@ -258,7 +258,7 @@ export default function LoginPage() {
 
                     <p className={`text-[13px] ${theme === "dark" ? "text-gray-400" : "text-[#6b7280]"}`}>
 
-                      <span className={`font-semibold ${theme === "dark" ? "text-[#f5c6d7]" : "text-[#840A36]"}`}>💡 Tip:</span> Use the email and password you created during registration. Forgot your password? Click the link below.
+                      <span className={`font-semibold ${theme === "dark" ? "text-[#f5c6d7]" : "text-[#840A36]"}`}>ð¡ Tip:</span> Use the email and password you created during registration. Forgot your password? Click the link below.
 
                     </p>
 
@@ -332,7 +332,7 @@ export default function LoginPage() {
 
                         className={`h-[56px] w-full rounded-2xl border pl-12 pr-12 text-[16px] outline-none transition-all ${theme === "dark" ? "border-white/10 bg-white/5 backdrop-blur-sm placeholder:text-gray-400 text-white focus:border-[#840A36] focus:ring-2 focus:ring-[#840A36]/20" : "border-[#e4e6ec] bg-[#f7f8fb] placeholder:text-[#b2b6c2] text-[#313744] focus:border-[#840A36] focus:ring-2 focus:ring-[#840A36]/20"}`}
 
-                        placeholder="••••••••"
+                        placeholder="â¢â¢â¢â¢â¢â¢â¢â¢"
 
                       />
 
@@ -380,7 +380,7 @@ export default function LoginPage() {
 
                       <span className={`text-[14px] transition-colors tracking-[0.15em] font-light ${theme === "dark" ? "text-gray-300 hover:text-white" : "text-[#6b7280] hover:text-[#313744]"}`}>
 
-                        REMEMBER ME · 30 DAYS
+                        REMEMBER ME Â· 30 DAYS
 
                       </span>
 

@@ -169,7 +169,14 @@ class AuthKernel {
 
     try {
       console.log('[AuthKernel] Bootstrapping session...');
-      const response = await fetch('/api/auth/me', { credentials: 'include' });
+      let response = await fetch('/api/auth/me', { credentials: 'include', cache: 'no-store' });
+      // Fallback: if cookie auth fails, retry with the Bearer token stored at login
+      if (response.status === 401 && typeof localStorage !== 'undefined') {
+        const storedToken = localStorage.getItem('token') || localStorage.getItem('dfluency.token');
+        if (storedToken) {
+          response = await fetch('/api/auth/me', { headers: { Authorization: `Bearer ${storedToken}` }, cache: 'no-store' });
+        }
+      }
       if (response.ok) {
         const data = await response.json();
         
@@ -258,7 +265,8 @@ class AuthKernel {
       // Step 3: Verify auth by calling /api/auth/me to ensure cookies are set
       console.log('[AuthKernel] Verifying auth after login...');
       const meResponse = await fetch('/api/auth/me', {
-        credentials: 'include'
+        credentials: 'include',
+        cache: 'no-store'
       });
 
       if (!meResponse.ok) {
@@ -377,7 +385,7 @@ class AuthKernel {
       }
 
       // Update user data after successful refresh
-      const userResponse = await fetch('/api/auth/me', { credentials: 'include' });
+      const userResponse = await fetch('/api/auth/me', { credentials: 'include', cache: 'no-store' });
       if (userResponse.ok) {
         const userData = await userResponse.json();
         this.state = {

@@ -79,6 +79,12 @@ export const POST = withRateLimit(async (request: Request) => {
       }
     });
 
+    // 4b. Stamp last successful login (used by AI insights)
+    await prisma.user.update({
+      where: { id: dbUser.id },
+      data: { lastLoginAt: new Date() }
+    });
+
     // 5. Build response with cookies
     const response = NextResponse.json({
       success: true,
