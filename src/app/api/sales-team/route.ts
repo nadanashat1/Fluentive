@@ -53,9 +53,11 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search') || undefined;
 
-    const where: any = { 
+    // Tenant isolation: only team members in the caller's organization.
+    const where: any = {
       isDeleted: false,
-      role: { in: ['sales', 'manager', 'admin'] as any[] } 
+      organizationId: user.organizationId ?? '',
+      role: { in: ['sales', 'manager', 'admin'] as any[] }
     };
     
     if (search) {
