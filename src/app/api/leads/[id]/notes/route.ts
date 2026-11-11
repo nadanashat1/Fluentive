@@ -14,7 +14,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       }, { status: 401 });
     }
     const { id } = await params;
-    
+
+    // Tenant isolation: the lead must belong to the caller's organization.
+    const lead = await prisma.lead.findFirst({
+      where: { id, organizationId: user.organizationId ?? '', isDeleted: false }
+    });
+    if (!lead) {
+      return NextResponse.json({ success: false, error: 'Lead not found' }, { status: 404 });
+    }
+
     const notes = await prisma.leadNote.findMany({
       where: { leadId: id },
       include: {
@@ -48,7 +56,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     }
     const { id } = await params;
     const body = await request.json();
-    
+
+    // Tenant isolation: the lead must belong to the caller's organization.
+    const lead = await prisma.lead.findFirst({
+      where: { id, organizationId: user.organizationId ?? '', isDeleted: false }
+    });
+    if (!lead) {
+      return NextResponse.json({ success: false, error: 'Lead not found' }, { status: 404 });
+    }
+
     const note = await prisma.leadNote.create({
       data: {
         leadId: id,
