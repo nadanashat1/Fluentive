@@ -225,11 +225,15 @@ async function generateSalesPipelineReport(
   const leads: SalesPipelineLead[] = await withTimeout(
     prisma.lead.findMany({
       where: {
-        userId: user.role === Roles.ADMIN ? {} : user.id,
-        createdAt: { gte: startDate, lte: endDate },
-        organizationId: user.organizationId ?? '',
-        isDeleted: false,
-        ...filters
+        AND: [
+          filters,
+          {
+            ...(user.role === Roles.ADMIN ? {} : { userId: user.id }),
+            organizationId: user.organizationId ?? '',
+            createdAt: { gte: startDate, lte: endDate },
+            isDeleted: false
+          }
+        ]
       } as Prisma.LeadWhereInput,
       include: {
         deals: {
@@ -325,11 +329,15 @@ async function generateLeadConversionReport(
   const leads: LeadConversionLead[] = await withTimeout(
     prisma.lead.findMany({
       where: {
-        userId: user.role === Roles.ADMIN ? {} : user.id,
-        createdAt: { gte: startDate, lte: endDate },
-        organizationId: user.organizationId ?? '',
-        isDeleted: false,
-        ...filters
+        AND: [
+          filters,
+          {
+            ...(user.role === Roles.ADMIN ? {} : { userId: user.id }),
+            organizationId: user.organizationId ?? '',
+            createdAt: { gte: startDate, lte: endDate },
+            isDeleted: false
+          }
+        ]
       } as Prisma.LeadWhereInput,
       include: {
         deals: {
@@ -466,11 +474,15 @@ async function generateRevenueAnalyticsReport(
   const deals: RevenueDealRow[] = await withTimeout(
     prisma.deal.findMany({
       where: {
-        userId: user.role === Roles.ADMIN ? {} : user.id,
-        createdAt: { gte: startDate, lte: endDate },
-        organizationId: user.organizationId ?? '',
-        isDeleted: false,
-        ...filters
+        AND: [
+          filters,
+          {
+            ...(user.role === Roles.ADMIN ? {} : { userId: user.id }),
+            organizationId: user.organizationId ?? '',
+            createdAt: { gte: startDate, lte: endDate },
+            isDeleted: false
+          }
+        ]
       } as Prisma.DealWhereInput,
       include: {
         lead: {
@@ -546,10 +558,15 @@ async function generateActivitySummaryReport(
   const activities: ActivitySummaryRow[] = await withTimeout(
     prisma.activity.findMany({
       where: {
-        userId: user.role === Roles.ADMIN ? {} : user.id,
-        createdAt: { gte: startDate, lte: endDate },
-        organizationId: user.organizationId ?? '',
-        ...filters
+        AND: [
+          filters,
+          {
+            ...(user.role === Roles.ADMIN ? {} : { userId: user.id }),
+            organizationId: user.organizationId ?? '',
+            createdAt: { gte: startDate, lte: endDate },
+            isDeleted: false
+          }
+        ]
       } as Prisma.ActivityWhereInput,
       include: {
         user: {
