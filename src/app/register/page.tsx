@@ -92,12 +92,6 @@ export default function RegisterPage() {
 
       setSuccess(true);
 
-      // Wait for cookies to be properly set before navigation
-      setTimeout(async () => {
-        await new Promise(res => setTimeout(res, 300));
-        router.push("/dashboard");
-      }, 1200);
-
     } catch (e) {
 
       if (e instanceof ApiError) {
@@ -211,7 +205,7 @@ export default function RegisterPage() {
 
                 <div className="mb-8">
 
-                  <h2 className={`text-[44px] font-bold ${theme === "dark" ? "text-white" : "text-[#242933]"}`}>Create Account ð</h2>
+                  <h2 className={`text-[44px] font-bold ${theme === "dark" ? "text-white" : "text-[#242933]"}`}>Create Account</h2>
 
                   <p className={`mt-2 text-[18px] ${theme === "dark" ? "text-gray-300" : "text-[#5f6674]"}`}>Join D-Fluency CRM and start managing your leads efficiently.</p>
 
@@ -219,7 +213,7 @@ export default function RegisterPage() {
 
                     <p className={`text-[13px] ${theme === "dark" ? "text-gray-400" : "text-[#6b7280]"}`}>
 
-                      <span className={`font-semibold ${theme === "dark" ? "text-[#f5c6d7]" : "text-[#840A36]"}`}>â¨ Getting Started:</span> Fill in your details below. Your password should be secure (8+ chars with uppercase, lowercase, numbers, and special characters).
+                      <span className={`font-semibold ${theme === "dark" ? "text-[#f5c6d7]" : "text-[#840A36]"}`}>Getting Started:</span> Fill in your details below. Your password should be secure (8+ chars with uppercase, lowercase, numbers, and special characters).
 
                     </p>
 
@@ -241,11 +235,11 @@ export default function RegisterPage() {
 
                     <div className={`absolute inset-0 flex flex-col items-center justify-center backdrop-blur-xl rounded-2xl animate-fadeIn z-20 ${theme === "dark" ? "bg-[#0b0614]/85" : "bg-white/90"}`}>
 
-                      <div className="text-green-400 text-6xl mb-4 animate-bounce">â</div>
+                      <div className="text-green-400 text-6xl mb-4 animate-bounce">✓</div>
 
-                      <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>You're all set! ð</p>
+                      <p className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Check your inbox</p>
 
-                      <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Taking you to your dashboard...</p>
+                      <p className={`text-sm mt-2 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Check your email for a verification link. Register again to resend it.</p>
 
                     </div>
 
@@ -490,4 +484,3 @@ export default function RegisterPage() {
   );
 
 }
-

@@ -30,7 +30,7 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
     include: { user: true }
   });
 
-  if (!session || session.revoked || session.expiresAt < new Date()) {
+  if (!session || session.revoked || session.expiresAt < new Date() || !session.user.isActive || session.user.isDeleted || !session.user.emailVerified || (session.user.passwordChangedAt && (decoded.issuedAtMs ?? decoded.iat * 1000) <= session.user.passwordChangedAt.getTime())) {
     // SECURITY: If token is reused or invalid, revoke all sessions for this user (possible breach)
     if (session) {
       await prisma.session.updateMany({

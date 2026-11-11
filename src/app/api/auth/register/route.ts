@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { hashPassword } from '@/lib/auth/password-service';
-import { generateAuthTokens, setAuthCookies } from '@/lib/server/auth';
+import { validEmail, validPassword, allowAuthEmail, sendAuthEmail } from '@/lib/server/auth-email';
 import { Roles } from '@/constants/roles';
 import { withRateLimit } from '@/lib/server/rate-limiter';
 
@@ -13,7 +13,7 @@ export const POST = withRateLimit(async (request: Request) => {
   try {
     const { name, email, password } = await request.json();
 
-    if (!name || !email || !password) {
+    if (typeof name !== 'string' || !name.trim() || name.length > 100 || !validEmail(email) || !validPassword(password)) {
       return NextResponse.json(
         { success: false, error: 'Name, email, and password are required' },
         { status: 400 }
@@ -22,16 +22,16 @@ export const POST = withRateLimit(async (request: Request) => {
 
     const normalizedEmail = email.toLowerCase().trim();
 
+    if (!await allowAuthEmail(request, normalizedEmail)) return NextResponse.json({ success: false, error: 'Too many email requests. Try again later.' }, { status: 429 });
+
     // 1. Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: { email: normalizedEmail }
     });
 
     if (existingUser) {
-      return NextResponse.json(
-        { success: false, error: 'This email is already registered' },
-        { status: 400 }
-      );
+      if (!existingUser.emailVerified && existingUser.isActive && !existingUser.isDeleted) await sendAuthEmail(existingUser.id, normalizedEmail, 'verify');
+      return NextResponse.json({ success: true, data: { verificationRequired: true } }, { status: 202 });
     }
 
     // 2. Hash password
@@ -53,52 +53,14 @@ export const POST = withRateLimit(async (request: Request) => {
           password: hashedPassword,
           role: Roles.ADMIN, // First user is Admin
           organizationId: org.id,
-          isActive: true
+          isActive: true,
+          emailVerified: false
         }
       });
     });
 
-    // 4. Generate tokens
-    const { accessToken, refreshToken } = await generateAuthTokens(
-      dbUser.id,
-      dbUser.organizationId
-    );
-
-    // 5. Store session
-    const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
-    const userAgent = request.headers.get('user-agent') || 'unknown';
-
-    await prisma.session.create({
-      data: {
-        userId: dbUser.id,
-        refreshToken,
-        ipAddress,
-        userAgent,
-        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-      }
-    });
-
-    // 6. Build response
-    const response = NextResponse.json({
-      success: true,
-      data: {
-        user: {
-          id: dbUser.id,
-          name: dbUser.name,
-          email: dbUser.email,
-          role: dbUser.role,
-          isActive: dbUser.isActive,
-          createdAt: dbUser.createdAt ? (dbUser as any).createdAt.toISOString() : new Date().toISOString(),
-          updatedAt: dbUser.updatedAt ? (dbUser as any).updatedAt.toISOString() : new Date().toISOString(),
-          organizationId: dbUser.organizationId
-        },
-        token: accessToken,
-        refreshToken: refreshToken
-      }
-    }, { status: 201 });
-
-    setAuthCookies(response, accessToken, refreshToken);
-    return response;
+    await sendAuthEmail(dbUser.id, normalizedEmail, 'verify');
+    return NextResponse.json({ success: true, data: { verificationRequired: true } }, { status: 201 });
 
   } catch (error: any) {
     console.error('[Register] FATAL ERROR:', error.message);

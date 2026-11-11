@@ -138,6 +138,8 @@ model User {
   name              String
   email             String    @unique
   password          String
+  emailVerified     Boolean   @default(true)
+  authActionTokens  AuthActionToken[]
   passwordChangedAt DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
@@ -1404,4 +1406,23 @@ model NotificationPreference {
 
   @@index([organizationId])
   @@map("notification_preferences")
+}
+
+// Existing demo and invited users remain usable. Public registration explicitly sets false.
+model AuthActionToken {
+  id        String @id @default(uuid())
+  tokenHash String @unique
+  userId    String
+  purpose   String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, purpose])
+}
+
+model AuthEmailRate {
+  id        String @id
+  count     Int @default(1)
+  expiresAt DateTime
+  @@index([expiresAt])
 }

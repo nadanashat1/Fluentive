@@ -42,11 +42,11 @@ export default function ForgotPasswordPage() {
           <div className="text-6xl mb-4">📧</div>
           <h1 className="text-[40px] font-semibold text-[#242933]">Check your inbox! 📬</h1>
           <p className="mt-4 text-[18px] text-[#5f6674]">
-            We have sent a temporary password to your email address. Use it to log in and then change your password immediately.
+            If an eligible account exists, a password reset link has been sent. Check your inbox and spam folder.
           </p>
           <div className="mt-4 p-4 rounded-xl bg-[#f7f8fb] border border-[#e4e6ec]">
             <p className="text-[14px] text-[#6b7280]">
-              <span className="font-semibold text-[#840A36]">⏰ Quick Tip:</span> The temporary password is valid until you change it. For security, please update your password right after logging in.
+              <span className="font-semibold text-[#840A36]">⏰ Quick Tip:</span> Reset links expire after 30 minutes and can only be used once.
             </p>
           </div>
           <Link
@@ -66,11 +66,11 @@ export default function ForgotPasswordPage() {
         <div className="text-6xl mb-4">🔐</div>
         <h1 className="text-[40px] font-semibold text-[#242933]">Forgot Password?</h1>
         <p className="mt-2 text-[18px] text-[#5f6674]">
-          No worries! Enter your email address and we'll send you a temporary password to access your account.
+          Enter your email address to request a password reset link.
         </p>
         <div className="mt-4 p-4 rounded-xl bg-[#f7f8fb] border border-[#e4e6ec]">
           <p className="text-[14px] text-[#6b7280]">
-            <span className="font-semibold text-[#840A36]">🔒 Security:</span> We'll send a secure temporary password to your email. You can use it to log in and then change your password in settings.
+            <span className="font-semibold text-[#840A36]">🔒 Security:</span> Your password stays unchanged until you open the link and choose a new one.
           </p>
         </div>
 

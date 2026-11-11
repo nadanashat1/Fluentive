@@ -23,6 +23,7 @@ interface JwtPayload {
   userId?: string;
   id?: string;  // backward compat with old tokens
   iat: number;
+  issuedAtMs?: number;
   exp: number;
 }
 
@@ -143,12 +144,14 @@ export async function requireAuth(request: NextRequest): Promise<{ user: UserRes
         organizationId: true,
         isActive: true,
         isDeleted: true,
+        emailVerified: true,
+        passwordChangedAt: true,
         createdAt: true,
         updatedAt: true
       }
     });
 
-    if (!user || !user.isActive || user.isDeleted) {
+    if (!user || !user.isActive || user.isDeleted || !user.emailVerified || (user.passwordChangedAt && (decoded.issuedAtMs ?? decoded.iat * 1000) <= user.passwordChangedAt.getTime())) {
       logReject('INVALID_USER', resolvedUserId);
       return { user: null, error: 'INVALID_USER' };
     }
@@ -198,8 +201,8 @@ export async function generateAuthTokens(userId: string, organizationId?: string
   const refreshSecret = process.env.JWT_REFRESH_SECRET || secret; // Fallback if not set
   if (!secret) throw new Error('JWT_SECRET not configured');
 
-  const accessToken = jwt.sign({ userId, organizationId }, secret, { expiresIn: ACCESS_TOKEN_EXPIRY });
-  const refreshToken = jwt.sign({ userId }, refreshSecret!, { expiresIn: REFRESH_TOKEN_EXPIRY });
+  const accessToken = jwt.sign({ userId, organizationId, issuedAtMs: Date.now() }, secret, { expiresIn: ACCESS_TOKEN_EXPIRY });
+  const refreshToken = jwt.sign({ userId, issuedAtMs: Date.now() }, refreshSecret!, { expiresIn: REFRESH_TOKEN_EXPIRY });
 
   return { accessToken, refreshToken };
 }

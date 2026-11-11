@@ -27,11 +27,10 @@ export const auth = {
       schema: LoginResponseSchema
     }),
     
-  register: (data: { name: string; email: string; password: string }): Promise<LoginResponse> =>
+  register: (data: { name: string; email: string; password: string }): Promise<{ verificationRequired: boolean }> =>
     apiClient(ROUTES.auth.register, {
       method: 'POST',
-      body: JSON.stringify(data),
-      schema: LoginResponseSchema
+      body: JSON.stringify(data)
     }),
     
   me: (): Promise<User> =>
