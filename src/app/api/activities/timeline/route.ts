@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '50');
     const filterType = searchParams.get('type') || undefined;
 
-    const where: any = {};
+    const where: any = { organizationId: user.organizationId ?? '' };
     if (filterType && filterType !== 'ALL') where.type = filterType;
 
     const activities = await prisma.activity.findMany({
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
       createdAt: a.createdAt instanceof Date ? a.createdAt.toISOString() : a.createdAt,
     }));
 
-    if (resultList.length === 0) {
+    if (resultList.length === 0 && user.organizationId === '1bb33316-62b4-46eb-8582-3e812aacff00') {
       resultList = demoTimelineActivities.filter(a => {
         if (!filterType || filterType === 'ALL') return true;
         return a.type === filterType;
