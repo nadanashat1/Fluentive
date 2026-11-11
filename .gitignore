@@ -20,8 +20,8 @@ dist/
 build/
 
 
-# Vercel (keep deployment files)
-# .vercel
+# Vercel (local CLI link metadata - do not commit)
+.vercel
 
 # Testing
 coverage/

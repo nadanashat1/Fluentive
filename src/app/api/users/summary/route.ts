@@ -25,9 +25,11 @@ export async function GET(request: Request) {
       }, { status: 401 });
     }
 
+    // Tenant isolation: only users in the caller's organization.
+    const orgWhere = { organizationId: user.organizationId ?? '' };
     const [total, active] = await Promise.all([
-      prisma.user.count({ where: { isDeleted: false } }),
-      prisma.user.count({ where: { isActive: true, isDeleted: false } })
+      prisma.user.count({ where: { ...orgWhere, isDeleted: false } }),
+      prisma.user.count({ where: { ...orgWhere, isActive: true, isDeleted: false } })
     ]);
 
     let usersSummary = {
@@ -35,6 +37,7 @@ export async function GET(request: Request) {
       active,
       newThisWeek: await prisma.user.count({
         where: {
+          ...orgWhere,
           createdAt: {
             gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
           }
@@ -42,16 +45,13 @@ export async function GET(request: Request) {
       }),
       roleBreakdown: (await prisma.user.groupBy({
         by: ['role'],
+        where: orgWhere,
         _count: { _all: true }
       })).map(r => ({
         role: r.role,
         count: r._count._all
       }))
     };
-
-    if (usersSummary.total <= 1) {
-      usersSummary = demoSummary;
-    }
 
     return NextResponse.json({
       success: true,

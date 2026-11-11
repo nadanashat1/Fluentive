@@ -18,8 +18,16 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
     }
     
+    // Tenant isolation: only users in the caller's organization can be unlocked.
+    const target = await prisma.user.findFirst({
+      where: { id, organizationId: user.organizationId ?? '' }
+    });
+    if (!target) {
+      return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
+    }
+
     await prisma.user.update({
-      where: { id },
+      where: { id: target.id },
       data: {
         lockUntil: null,
         loginAttemptCount: 0

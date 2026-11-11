@@ -88,8 +88,9 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
       return NextResponse.json({ success: true, data: demoInstructorsMap[id] });
     }
 
+    // Tenant isolation: only instructors in the caller's organization.
     const instructor = await prisma.instructor.findFirst({
-      where: { id, isDeleted: false },
+      where: { id, isDeleted: false, organizationId: user.organizationId ?? '' },
       include: {
         courses: {
           where: { isDeleted: false },
@@ -138,8 +139,16 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
       return NextResponse.json({ success: true, data: demoInstructorsMap[id] });
     }
 
+    // Tenant isolation: only instructors in the caller's organization.
+    const owned = await prisma.instructor.findFirst({
+      where: { id, isDeleted: false, organizationId: user.organizationId ?? '' }
+    });
+    if (!owned) {
+      return NextResponse.json({ success: false, error: 'Instructor not found' }, { status: 404 });
+    }
+
     const instructor = await prisma.instructor.update({
-      where: { id },
+      where: { id: owned.id },
       data: {
         ...(name && { name }),
         ...(email && { email }),
@@ -182,8 +191,16 @@ export async function DELETE(request: NextRequest, context: { params: Promise<{ 
       return NextResponse.json({ success: true });
     }
 
+    // Tenant isolation: only instructors in the caller's organization.
+    const owned = await prisma.instructor.findFirst({
+      where: { id, isDeleted: false, organizationId: user.organizationId ?? '' }
+    });
+    if (!owned) {
+      return NextResponse.json({ success: false, error: 'Instructor not found' }, { status: 404 });
+    }
+
     await prisma.instructor.update({
-      where: { id },
+      where: { id: owned.id },
       data: { isDeleted: true, deletedAt: new Date() },
     });
 
