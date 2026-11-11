@@ -31,7 +31,7 @@ export function Topbar({ onMenuToggle }: TopbarProps) {
         <WorkspaceSwitcher />
       </div>
 
-      <div className="flex-1 max-w-md hidden lg:flex items-center gap-4 mx-8">
+      <div className="flex-1 min-w-0 max-w-xl hidden lg:flex items-center gap-4 mx-4 xl:mx-8">
         <UniversalSearch />
         <TimeTrackingWidget />
       </div>
