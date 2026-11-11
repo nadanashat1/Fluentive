@@ -13,8 +13,9 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     }
     const { id, noteId } = await params;
 
+    // Tenant isolation: only notes on leads in the caller's organization.
     const existing = await prisma.leadNote.findFirst({
-      where: { id: noteId, leadId: id }
+      where: { id: noteId, leadId: id, lead: { organizationId: user.organizationId ?? '' } }
     });
     if (!existing) {
       return NextResponse.json({ success: false, message: 'Note not found' }, { status: 404 });
