@@ -1,4 +1,4 @@
-// Pure HTTP client â auth refresh delegated to AuthKernel on 401
+// Pure HTTP client - auth refresh delegated to AuthKernel on 401
 
 import { createCorrelationId } from "@/lib/observability/correlation";
 
