@@ -70,18 +70,20 @@ export function WorkspaceSwitcher() {
                 ))}
               </div>
 
-              <div className="p-2 border-t border-gray-50 dark:border-white/5 bg-gray-50/50 dark:bg-white/2">
-                <button className="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400 transition">
+              <div className="p-2 border-t border-gray-50 dark:border-white/5 bg-gray-50/50 dark:bg-white/[0.03]">
+                <button type="button" disabled aria-disabled="true" title="Coming soon" className="w-full flex items-center gap-3 p-2.5 rounded-xl text-gray-600 dark:text-gray-400 opacity-60 cursor-not-allowed">
                   <div className="h-8 w-8 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center">
                     <Plus size={16} />
                   </div>
-                  <span className="text-sm font-bold">New Workspace</span>
+                  <span className="text-sm font-bold whitespace-nowrap">New Workspace</span>
+                  <span className="ml-auto whitespace-nowrap text-[10px] font-semibold uppercase text-gray-400">Coming soon</span>
                 </button>
-                <button className="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 text-gray-600 dark:text-gray-400 transition">
+                <button type="button" disabled aria-disabled="true" title="Coming soon" className="w-full flex items-center gap-3 p-2.5 rounded-xl text-gray-600 dark:text-gray-400 opacity-60 cursor-not-allowed">
                   <div className="h-8 w-8 rounded-lg bg-gray-100 dark:bg-white/5 flex items-center justify-center">
                     <Building2 size={16} />
                   </div>
                   <span className="text-sm font-bold">Org Settings</span>
+                  <span className="ml-auto whitespace-nowrap text-[10px] font-semibold uppercase text-gray-400">Coming soon</span>
                 </button>
               </div>
             </motion.div>
