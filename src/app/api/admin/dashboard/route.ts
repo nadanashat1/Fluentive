@@ -87,6 +87,7 @@ export async function GET(request: NextRequest) {
             prisma.user.count({
               where: {
                 isActive: true,
+                organizationId: user.organizationId ?? '',
                 createdAt: { gte: startDate }
               }
             }),
@@ -95,6 +96,7 @@ export async function GET(request: NextRequest) {
             prisma.lead.count({
               where: {
                 createdAt: { gte: startDate },
+                organizationId: user.organizationId ?? '',
                 isDeleted: false
               }
             }),
@@ -103,6 +105,7 @@ export async function GET(request: NextRequest) {
             prisma.deal.count({
               where: {
                 createdAt: { gte: startDate },
+                organizationId: user.organizationId ?? '',
                 isDeleted: false
               }
             }),
@@ -110,7 +113,8 @@ export async function GET(request: NextRequest) {
             // Activity count only
             prisma.activity.count({
               where: {
-                createdAt: { gte: startDate }
+                createdAt: { gte: startDate },
+                organizationId: user.organizationId ?? ''
               }
             })
           ]),
