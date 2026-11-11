@@ -56,11 +56,12 @@ export default function Home() {
             <div className="bg-purple-50 border-l-4 border-purple-600 p-6 rounded-lg">
               <h2 className="text-xl font-bold text-gray-800 mb-3">🤖 AI Features</h2>
               <ul className="space-y-2 text-gray-700">
-                <li>✓ 18 AI-Powered Endpoints</li>
-                <li>✓ Lead Scoring & Sentiment Analysis</li>
+                <li>✓ Automated lead scoring and pipeline analytics</li>
+                <li>✓ Lead prioritization and sales forecasting</li>
                 <li>✓ Revenue Forecasting</li>
                 <li>✓ Smart Lead Assignment</li>
               </ul>
+              <p className="mt-3 text-sm text-purple-700">Portfolio demo with synthetic sample data.</p>
             </div>
           </div>
         </div>
