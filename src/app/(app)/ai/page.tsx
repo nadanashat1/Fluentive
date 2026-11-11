@@ -1,15 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, RefreshCw, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, BarChart3, BrainCircuit, Activity, ChevronRight, Mail, PhoneCall } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { apiFetch } from "@/lib/api-client";
-import { WidgetErrorBoundary } from "@/components/error-boundary";
 
 const fetcher = (url: string) => apiFetch(url);
+
+class SectionErrorBoundary extends React.Component<
+  { name: string; children: React.ReactNode },
+  { failed: boolean }
+> {
+  constructor(props: { name: string; children: React.ReactNode }) {
+    super(props);
+    this.state = { failed: false };
+  }
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    if (this.state.failed) {
+      return (
+        <div className="flex min-h-[120px] items-center justify-center rounded-xl border border-[#ececef] dark:border-[#2a2f3a] bg-white dark:bg-[#1a0b2e] p-4 text-[13px] text-[#8b8f9b]">
+          {this.props.name} is temporarily unavailable.
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 
 function DashboardSkeleton() {
   return (
@@ -178,7 +201,7 @@ export default function AIDashboardPage() {
 
       {/* Charts Section */}
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-       <WidgetErrorBoundary widgetName="AI Revenue Forecast">
+       <SectionErrorBoundary name="AI Revenue Forecast">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -210,9 +233,9 @@ export default function AIDashboardPage() {
             <div className="min-h-[350px] bg-gray-50 dark:bg-[#0b0614] rounded-lg" />
           )}
         </motion.div>
-       </WidgetErrorBoundary>
+       </SectionErrorBoundary>
 
-       <WidgetErrorBoundary widgetName="Prioritized Leads">
+       <SectionErrorBoundary name="Prioritized Leads">
         <motion.div 
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -253,7 +276,7 @@ export default function AIDashboardPage() {
             </div>
           </div>
         </motion.div>
-       </WidgetErrorBoundary>
+       </SectionErrorBoundary>
       </div>
 
       {/* AI Features Grid Restored & Animated */}
