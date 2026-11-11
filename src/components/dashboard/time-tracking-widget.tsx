@@ -108,7 +108,7 @@ export function TimeTrackingWidget() {
   if (loading || !user) return null;
 
   return (
-    <div className="flex items-center gap-3 rounded-full bg-white dark:bg-[#1a0b2e] border border-[#ececef] dark:border-[#2a2f3a] px-3 py-1.5 shadow-sm transition-all hover:shadow-md">
+    <div className="flex shrink-0 items-center gap-3 whitespace-nowrap rounded-full bg-white dark:bg-[#1a0b2e] border border-[#ececef] dark:border-[#2a2f3a] px-3 py-1.5 shadow-sm transition-all hover:shadow-md">
       <div className="flex items-center gap-2 pr-1 border-r border-[#ececef] dark:border-[#2a2f3a]">
         <div className="relative flex h-2 w-2">
           {isWorking && (
