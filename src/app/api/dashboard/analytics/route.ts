@@ -29,9 +29,13 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
       _count: true
     }),
 
-    // 2. CRM - Deals / Pipeline
+    // 2. CRM - Deals / Pipeline (active stages only, consistent with /api/dashboard/summary)
     prisma.deal.aggregate({
-      where: { organizationId: orgId, isDeleted: false },
+      where: {
+        organizationId: orgId,
+        isDeleted: false,
+        stage: { in: ['OPEN', 'DISCOVERY', 'QUALIFICATION', 'PROPOSAL', 'NEGOTIATION'] }
+      },
       _sum: { value: true },
       _count: true,
       _avg: { probability: true }
