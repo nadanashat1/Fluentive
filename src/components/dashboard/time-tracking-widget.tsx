@@ -73,15 +73,17 @@ export function TimeTrackingWidget() {
 
   const toggleWorkMode = async () => {
     const newState = !isWorking;
-    setIsWorking(newState);
-    localStorage.setItem('work_mode_enabled', String(newState));
-    
+
     if (!newState) {
-      // Manual end session
+      // Manual end session: wait for the backend to end the session BEFORE
+      // flipping local state, otherwise the immediate fetchStatus poll can
+      // still see the old active session and resurrect the WORKING state.
       try {
         await apiFetch('/api/time-tracking/end-session', { method: 'POST' });
-        setSession(prev => prev ? { ...prev, isActive: false } : null);
       } catch (e) {}
+      setSession(prev => prev ? { ...prev, isActive: false } : null);
+      setIsWorking(false);
+      localStorage.setItem('work_mode_enabled', 'false');
     } else {
       // Force a heartbeat to start session immediately
       try {
@@ -89,8 +91,10 @@ export function TimeTrackingWidget() {
           method: "POST",
           body: JSON.stringify({ isIdle: false })
         });
-        fetchStatus();
       } catch (e) {}
+      setIsWorking(true);
+      localStorage.setItem('work_mode_enabled', 'true');
+      fetchStatus();
     }
   };
 
