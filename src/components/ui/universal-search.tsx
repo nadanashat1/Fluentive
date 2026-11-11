@@ -56,7 +56,7 @@ export function UniversalSearch() {
   };
 
   return (
-    <div className="relative z-50">
+    <div className="relative z-50 flex-1 min-w-0">
       <div className="relative flex items-center">
         <Search className="absolute left-3 text-gray-400" size={16} />
         <input
@@ -69,7 +69,7 @@ export function UniversalSearch() {
           }}
           onFocus={() => setIsOpen(true)}
           placeholder="Search leads, deals, candidates (Ctrl+K)..."
-          className="w-[300px] h-9 pl-9 pr-4 rounded-full bg-gray-100 dark:bg-[#1a0b2e] border-none text-[13px] font-medium focus:ring-2 focus:ring-brand/20 transition-all outline-none"
+          className="w-full max-w-[300px] h-9 pl-9 pr-4 rounded-full bg-gray-100 dark:bg-[#1a0b2e] border-none text-[13px] font-medium focus:ring-2 focus:ring-brand/20 transition-all outline-none"
         />
         {/* Keyboard Shortcut Hint */}
         <div className="absolute right-3 px-1.5 py-0.5 rounded bg-white dark:bg-[#0b0614] border border-gray-200 dark:border-gray-800 text-[10px] text-gray-500 font-mono shadow-sm">
