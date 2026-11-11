@@ -57,23 +57,30 @@ export const getLeads = async (
   return { leads, total, page, limit };
 };
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export const createLead = async (data: any, organizationId: string, userId: string) => {
   const { course, notes, ...restData } = data;
+  // `course` may be a Course UUID (internal) or free-text interest from the UI.
+  // Only UUIDs can be written to the courseId foreign key; keep free text as a note.
+  const courseId = course && UUID_RE.test(String(course)) ? course : null;
+  const freeTextCourse = course && !courseId ? `Course Interest: ${course}` : null;
+  const noteContent = [notes, freeTextCourse].filter(Boolean).join('\n');
   const lead = await prisma.lead.create({
     data: {
       ...restData,
-      courseId: course || null,
+      courseId,
       organizationId,
       userId
     }
   });
 
-  if (notes) {
+  if (noteContent) {
     await prisma.leadNote.create({
       data: {
         leadId: lead.id,
         authorId: userId,
-        content: notes
+        content: noteContent
       }
     });
   }
@@ -110,7 +117,7 @@ export const updateLead = async (
 
   const { course, notes, ...restData } = data;
   const updatePayload: any = { ...restData };
-  if (course !== undefined) updatePayload.courseId = course || null;
+  if (course !== undefined) updatePayload.courseId = (course && UUID_RE.test(String(course))) ? course : null;
 
   const lead = await prisma.lead.update({
     where: { id },
@@ -118,12 +125,12 @@ export const updateLead = async (
     include: { owner: { select: { name: true } } }
   });
 
-  if (notes) {
+  if (noteContent) {
     await prisma.leadNote.create({
       data: {
         leadId: lead.id,
         authorId: userId,
-        content: notes
+        content: noteContent
       }
     });
   }
