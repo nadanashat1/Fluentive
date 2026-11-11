@@ -119,6 +119,11 @@ export const updateLead = async (
   const updatePayload: any = { ...restData };
   if (course !== undefined) updatePayload.courseId = (course && UUID_RE.test(String(course))) ? course : null;
 
+  // Build the note content here (previously referenced noteContent, which only
+  // exists in createLead - that made every lead update return 500 after saving).
+  const noteContent = [notes].filter(Boolean).join('
+');
+
   const lead = await prisma.lead.update({
     where: { id },
     data: updatePayload,
