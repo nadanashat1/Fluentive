@@ -100,7 +100,7 @@ export default function AIDashboardPage() {
             AI Command Center <Sparkles className="text-brand" size={28} />
           </h1>
           <p className="mt-1 text-[15px] text-[#8b8f9b] dark:text-gray-400">
-            Real-time machine learning predictions and pipeline analytics.
+            Rule-based lead scoring and pipeline analytics.
           </p>
         </div>
         <div className="flex gap-3 items-center">
@@ -135,7 +135,7 @@ export default function AIDashboardPage() {
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-bold text-[#2f3440] dark:text-white flex items-center gap-2">
-              Deep Learning Insight <span className="rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[10px] font-bold shadow-sm">98% Confidence</span>
+              Pipeline Insight <span className="rounded-full bg-emerald-500 text-white px-2 py-0.5 text-[10px] font-bold shadow-sm">Automated insight</span>
             </h3>
             <p className="mt-1 text-sm font-medium text-gray-700 dark:text-gray-300">
               {dashboard.insight.message}
