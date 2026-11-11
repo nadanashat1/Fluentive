@@ -207,7 +207,7 @@ export default function RegisterPage() {
 
                   <h2 className={`text-[44px] font-bold ${theme === "dark" ? "text-white" : "text-[#242933]"}`}>Create Account</h2>
 
-                  <p className={`mt-2 text-[18px] ${theme === "dark" ? "text-gray-300" : "text-[#5f6674]"}`}>Join D-Fluency CRM and start managing your leads efficiently.</p>
+                  <p className={`mt-2 text-[18px] ${theme === "dark" ? "text-gray-300" : "text-[#5f6674]"}`}>Join Fluentive and start managing your leads efficiently.</p>
 
                   <div className={`mt-4 p-4 rounded-2xl backdrop-blur-md border ${theme === "dark" ? "bg-white/5 border-white/10" : "bg-[#f7f8fb] border-[#e4e6ec]"}`}>
 
